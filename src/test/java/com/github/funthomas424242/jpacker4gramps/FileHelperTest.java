@@ -7,6 +7,7 @@ import static org.junit.Assert.fail;
 import java.io.File;
 import java.io.IOException;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import org.apache.commons.configuration2.Configuration;
 import org.apache.commons.configuration2.builder.fluent.Configurations;
@@ -101,9 +102,22 @@ public class FileHelperTest {
         final List<File> fileList = fileHelper.getRecursiveFilelistOfFolder();
         // asserts
         assertEquals(3, fileList.size());
-        assertEquals("Beispiel.jpg", fileList.get(0).getName());
-        assertEquals("Beispiel.xcf", fileList.get(1).getName());
-        assertEquals("Beispiel.png", fileList.get(2).getName());
+        // check containment of files -> because order is os dependend
+        assertEquals(1,
+                fileList.stream()
+                    .filter(f -> f.getName().equals("Beispiel.jpg"))
+                    .collect(Collectors.counting())
+                    .longValue());
+        assertEquals(1,
+                fileList.stream()
+                    .filter(f -> f.getName().equals("Beispiel.xcf"))
+                    .collect(Collectors.counting())
+                    .longValue());
+        assertEquals(1,
+                fileList.stream()
+                    .filter(f -> f.getName().equals("Beispiel.png"))
+                    .collect(Collectors.counting())
+                    .longValue());
     }
 
     @Test(expected = IllegalArgumentException.class)
