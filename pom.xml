@@ -13,6 +13,35 @@
 
 	</properties>
 
+	<scm>
+		<url>https://github.com/FunThomas424242/jpacker4gramps</url>
+		<connection>scm:git:https://github.com/FunThomas424242/jpacker4gramps.git</connection>
+		<developerConnection>scm:git:https://github.com/FunThomas424242/jpacker4gramps.git</developerConnection>
+	</scm>
+
+	<ciManagement>
+		<system>Travis</system>
+		<url>https://travis-ci.org/FunThomas424242/jpacker4gramps</url>
+	</ciManagement>
+
+	<issueManagement>
+		<system>Issue</system>
+		<url>https://github.com/FunThomas424242/jpacker4gramps/issues</url>
+	</issueManagement>
+
+	<distributionManagement>
+		<snapshotRepository>
+			<id>snapshots</id>
+			<name>oss-jfrog-artifactory-snapshots</name>
+			<url>https://oss.jfrog.org/artifactory/oss-snapshot-local</url>
+		</snapshotRepository>
+		<repository>
+			<id>bintray-funthomas424242-dsl</id>
+			<name>oss-jfrog-artifactory-releases</name>
+			<url>https://oss.jfrog.org/artifactory/oss-release-local</url>
+		</repository>
+	</distributionManagement>
+
 	<dependencies>
 		<dependency>
 			<groupId>org.slf4j</groupId>
@@ -101,11 +130,33 @@
 
 	<build>
 		<plugins>
+			<plugin>
+				<groupId>org.jacoco</groupId>
+				<artifactId>jacoco-maven-plugin</artifactId>
+				<executions>
+					<execution>
+						<goals>
+							<goal>prepare-agent</goal>
+						</goals>
+					</execution>
+					<execution>
+						<id>report</id>
+						<phase>test</phase>
+						<goals>
+							<goal>report</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
 
 		</plugins>
 		<pluginManagement>
 			<plugins>
-
+				<plugin>
+					<groupId>org.jacoco</groupId>
+					<artifactId>jacoco-maven-plugin</artifactId>
+					<version>0.7.7.201606060606</version>
+				</plugin>
 			</plugins>
 		</pluginManagement>
 	</build>
