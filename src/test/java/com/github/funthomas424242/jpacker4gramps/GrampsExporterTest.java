@@ -1,4 +1,4 @@
-//package com.github.funthomas424242.jpacker4gramps.zip;
+//package com.github.funthomas424242.jpacker4gramps;
 //
 //import static org.junit.Assert.assertEquals;
 //
