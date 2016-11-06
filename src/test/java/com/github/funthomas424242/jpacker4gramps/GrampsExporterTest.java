@@ -1,19 +1,12 @@
 package com.github.funthomas424242.jpacker4gramps;
 
-import static org.junit.Assert.assertEquals;
-
 import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.IOException;
 
 import org.apache.commons.configuration2.Configuration;
 import org.apache.commons.configuration2.builder.fluent.Configurations;
 import org.apache.commons.configuration2.ex.ConfigurationException;
 import org.junit.Before;
 import org.junit.BeforeClass;
-import org.junit.Test;
-
-import com.github.funthomas424242.jpacker4gramps.GrampsExporter;
 
 public class GrampsExporterTest {
 
