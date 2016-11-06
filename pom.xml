@@ -39,8 +39,18 @@
 			<artifactId>junit</artifactId>
 			<scope>test</scope>
 		</dependency>
-
-
+		<!-- https://mvnrepository.com/artifact/org.apache.commons/commons-configuration2 -->
+		<dependency>
+			<groupId>org.apache.commons</groupId>
+			<artifactId>commons-configuration2</artifactId>
+			<scope>test</scope>
+		</dependency>
+		<!-- https://mvnrepository.com/artifact/commons-beanutils/commons-beanutils -->
+		<dependency>
+			<groupId>commons-beanutils</groupId>
+			<artifactId>commons-beanutils</artifactId>
+			<scope>test</scope>
+		</dependency>
 	</dependencies>
 
 	<dependencyManagement>
@@ -74,6 +84,18 @@
 				<artifactId>junit</artifactId>
 				<version>4.12</version>
 			</dependency>
+			<!-- https://mvnrepository.com/artifact/org.apache.commons/commons-configuration2 -->
+			<dependency>
+				<groupId>org.apache.commons</groupId>
+				<artifactId>commons-configuration2</artifactId>
+				<version>2.0</version>
+			</dependency>
+			<!-- https://mvnrepository.com/artifact/commons-beanutils/commons-beanutils -->
+			<dependency>
+				<groupId>commons-beanutils</groupId>
+				<artifactId>commons-beanutils</artifactId>
+				<version>1.9.3</version>
+			</dependency>
 		</dependencies>
 	</dependencyManagement>
 
@@ -87,5 +109,20 @@
 			</plugins>
 		</pluginManagement>
 	</build>
+
+	<developers>
+		<developer>
+			<id>funthomas424242</id>
+			<name>Thomas Schubert</name>
+			<email>funthomas424242@googlemail.com</email>
+			<timezone>+1</timezone>
+			<organization>The world wide open source community</organization>
+			<roles>
+				<role>owner</role>
+				<role>developer</role>
+			</roles>
+		</developer>
+	</developers>
+
 
 </project>
