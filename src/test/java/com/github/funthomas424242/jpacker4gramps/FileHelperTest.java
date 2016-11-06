@@ -15,6 +15,11 @@ import org.junit.Test;
 
 public class FileHelperTest {
 
+    private static final String TEST_PROPERTIES_FILENAME = "test.properties";
+
+    private static final String BEISPIEL1_GRAMPS_FILE = "beispiel1.gramps.file";
+    private static final String BEISPIEL1_GRAMPS_FILE_LEN = "beispiel1.gramps.file.len";
+
     protected FileHelper fileHelper;
 
     protected static Configuration config;
@@ -23,7 +28,7 @@ public class FileHelperTest {
     public static void init() {
         Configurations configs = new Configurations();
         try {
-            config = configs.properties(new File("test.properties"));
+            config = configs.properties(new File(TEST_PROPERTIES_FILENAME));
         } catch (ConfigurationException e) {
             e.printStackTrace();
         }
@@ -31,7 +36,7 @@ public class FileHelperTest {
 
     @Before
     public void setUp() {
-        final File file = new File(config.getString("gramps.file"));
+        final File file = new File(config.getString(BEISPIEL1_GRAMPS_FILE));
         assertTrue("gramps.file does not exists:", file.exists());
         fileHelper = new FileHelper(file);
     }
@@ -39,7 +44,8 @@ public class FileHelperTest {
     @Test
     public void readContentOfDatabaseFile() throws IOException {
         final String content = fileHelper.getFileContent();
-        assertEquals(28, content.length());
+        assertEquals(config.getInt(BEISPIEL1_GRAMPS_FILE_LEN),
+                content.length());
     }
 
 }
