@@ -19,8 +19,6 @@
 //
 //    private static final String TEST_PROPERTIES_FILENAME = "test.properties";
 //
-//    
-//
 //    protected GrampsExporter exporter;
 //
 //    protected static Configuration config;
@@ -39,7 +37,7 @@
 //    public void setUp() {
 //        final File grampsDatabasFile = new File(
 //                "src/test/resources/beispiel1/database/ahnen1.txt");
-//        
+//
 //        final File targetArchive = new File("target/test/archive1");
 //        exporter = new GrampsExporter(grampsDatabasFile, mediaFolder,
 //                targetArchive);

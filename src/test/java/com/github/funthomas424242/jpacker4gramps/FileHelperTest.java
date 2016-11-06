@@ -2,6 +2,7 @@ package com.github.funthomas424242.jpacker4gramps;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
 
 import java.io.File;
 import java.io.IOException;
@@ -53,6 +54,18 @@ public class FileHelperTest {
                 content.length());
     }
 
+    @Test(expected = IllegalArgumentException.class)
+    public void listMediaFolderFiles_WithException() {
+        // preparing
+        final File grampsFile = new File(
+                config.getString(BEISPIEL1_GRAMPS_FILE));
+        final FileHelper fileHelper = new FileHelper(grampsFile);
+        // execution
+        fileHelper.getFilelistOfFolder();
+        // asserts
+        fail();
+    }
+
     @Test
     public void listMediaFolderFiles_WithFile() {
         // preparing
@@ -64,6 +77,45 @@ public class FileHelperTest {
         // asserts
         assertEquals(1, fileList.size());
         assertEquals("Beispiel.jpg", fileList.get(0).getName());
+    }
+
+    @Test(expected = IllegalArgumentException.class)
+    public void listRecursiveMediaFolderFiles_WithException() {
+        // preparing
+        final File grampsFile = new File(
+                config.getString(BEISPIEL1_GRAMPS_FILE));
+        final FileHelper fileHelper = new FileHelper(grampsFile);
+        // execution
+        fileHelper.getRecursiveFilelistOfFolder();
+        // asserts
+        fail();
+    }
+
+    @Test
+    public void listRecursiveMediaFolderFiles_WithFiles() {
+        // preparing
+        final File mediaFolder = new File(
+                config.getString(BEISPIEL1_MEDIA_FOLDER));
+        final FileHelper fileHelper = new FileHelper(mediaFolder);
+        // execution
+        final List<File> fileList = fileHelper.getRecursiveFilelistOfFolder();
+        // asserts
+        assertEquals(3, fileList.size());
+        assertEquals("Beispiel.jpg", fileList.get(0).getName());
+        assertEquals("Beispiel.xcf", fileList.get(1).getName());
+        assertEquals("Beispiel.png", fileList.get(2).getName());
+    }
+
+    @Test(expected = IllegalArgumentException.class)
+    public void listMediaFolderDirectories_WithException() {
+        // preparing
+        final File grampsFile = new File(
+                config.getString(BEISPIEL1_GRAMPS_FILE));
+        final FileHelper fileHelper = new FileHelper(grampsFile);
+        // execution
+        fileHelper.getDirectorylistOfFolder();
+        // asserts
+        fail();
     }
 
     @Test

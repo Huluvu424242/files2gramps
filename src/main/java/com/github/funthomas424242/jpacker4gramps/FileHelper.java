@@ -4,8 +4,10 @@ import java.io.File;
 import java.io.FilenameFilter;
 import java.io.IOException;
 import java.nio.file.Files;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Stack;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -25,6 +27,18 @@ public class FileHelper {
         return new String(Files.readAllBytes(file.toPath()));
     }
 
+    public List<File> getDirectorylistOfFolder() {
+        if (!file.isDirectory()) {
+            throw new IllegalArgumentException();
+        }
+        final File[] files = file.listFiles(new FilenameFilter() {
+            public boolean accept(final File dir, final String name) {
+                return new File(dir, name).isDirectory();
+            }
+        });
+        return Arrays.asList(files);
+    }
+
     public List<File> getFilelistOfFolder() {
         if (!file.isDirectory()) {
             throw new IllegalArgumentException();
@@ -37,16 +51,32 @@ public class FileHelper {
         return Arrays.asList(files);
     }
 
-    public List<File> getDirectorylistOfFolder() {
+    public List<File> getRecursiveFilelistOfFolder() {
         if (!file.isDirectory()) {
             throw new IllegalArgumentException();
         }
-        final File[] files = file.listFiles(new FilenameFilter() {
-            public boolean accept(final File dir, final String name) {
-                return new File(dir, name).isDirectory();
-            }
-        });
-        return Arrays.asList(files);
+        final List<File> fileList = new ArrayList<File>();
+        final Stack<File> folderStack = new Stack<File>();
+        folderStack.push(file);
+
+        while (!folderStack.isEmpty()) {
+            final File curFolder = folderStack.pop();
+
+            final File[] folders = curFolder.listFiles(new FilenameFilter() {
+                public boolean accept(final File dir, final String name) {
+                    return new File(dir, name).isDirectory();
+                }
+            });
+            folderStack.addAll(Arrays.asList(folders));
+
+            final File[] files = curFolder.listFiles(new FilenameFilter() {
+                public boolean accept(final File dir, final String name) {
+                    return new File(dir, name).isFile();
+                }
+            });
+            fileList.addAll(Arrays.asList(files));
+        }
+        return fileList;
     }
 
 }
