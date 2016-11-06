@@ -118,6 +118,12 @@ public class FileHelperTest {
                     .filter(f -> f.getName().equals("Beispiel.png"))
                     .collect(Collectors.counting())
                     .longValue());
+        // check directories are not listed
+        assertEquals(0,
+                fileList.stream()
+                    .filter(f -> f.getName().equals("subfolder1"))
+                    .collect(Collectors.counting())
+                    .longValue());
     }
 
     @Test(expected = IllegalArgumentException.class)
