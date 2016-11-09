@@ -29,26 +29,19 @@ public class GrampsExporter {
     }
 
     public GrampsExporter(final File grampsFile, final File targetArchive) {
-
-        this.grampsFile = grampsFile;
-        this.mediaFolder = null;
-        this.targetArchive = targetArchive;
+        this(grampsFile, targetArchive, null);
     }
 
-    protected void createArchivefile() {
-        try {
-            final File archivFolder = targetArchive.getParentFile();
-            if (archivFolder != null) {
-                archivFolder.mkdirs();
-            }
-            if (!targetArchive.createNewFile()) {
-                final FileHelper fileHelper = new FileHelper(targetArchive);
-                fileHelper.clearFile();
-            }
-        } catch (IOException e) {
-            logger.debug(targetArchive.getAbsolutePath(), e);
+    protected void createArchivefile()
+            throws IOException, FileNotFoundException {
+        final File archivFolder = targetArchive.getParentFile();
+        if (archivFolder != null) {
+            archivFolder.mkdirs();
         }
-
+        if (!targetArchive.createNewFile()) {
+            final FileHelper fileHelper = new FileHelper(targetArchive);
+            fileHelper.clearFile();
+        }
     }
 
     protected void addGampsFile() {
