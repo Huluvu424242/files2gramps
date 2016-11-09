@@ -6,6 +6,7 @@ import static org.junit.Assert.fail;
 
 import java.io.File;
 import java.io.IOException;
+import java.io.PrintWriter;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -39,6 +40,12 @@ public class FileHelperTest {
     @Before
     public void setUp() {
 
+    }
+
+    @Test(expected = IllegalArgumentException.class)
+    public void createFileHelper_NullArgument() {
+        new FileHelper(null);
+        fail();
     }
 
     @Test
@@ -149,6 +156,31 @@ public class FileHelperTest {
         // asserts
         assertEquals(1, fileList.size());
         assertEquals("subfolder1", fileList.get(0).getName());
+    }
+
+    @Test
+    public void clearFile_FileExist() throws IOException {
+
+        // prepare
+        final String fileName = "target/test/clear/file"
+                + System.currentTimeMillis();
+        final File file = new File(fileName);
+        file.getParentFile().mkdirs();
+        file.createNewFile();
+        PrintWriter writer = new PrintWriter(file);
+        writer.print("Hallo");
+        writer.flush();
+        writer.close();
+        final FileHelper fileHelper = new FileHelper(file);
+
+        // execution
+        fileHelper.clearFile();
+
+        // asserts
+        final File resultFile = new File(fileName);
+        assertTrue(resultFile.exists());
+        assertTrue("File " + fileName + " wurde nicht korrekt gelöscht",
+                resultFile.length() == 0);
     }
 
 }

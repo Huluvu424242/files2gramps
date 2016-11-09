@@ -1,8 +1,10 @@
 package com.github.funthomas424242.jpacker4gramps;
 
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.FilenameFilter;
 import java.io.IOException;
+import java.io.PrintWriter;
 import java.nio.file.Files;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -19,8 +21,11 @@ public class FileHelper {
     protected final File file;
 
     public FileHelper(final File file) {
+        if (file == null) {
+            throw new IllegalArgumentException();
+        }
         this.file = file;
-        logger.debug("File path absolut:" + file.getAbsolutePath());
+        logger.info("File path absolut:" + file.getAbsolutePath());
     }
 
     public String getFileContent() throws IOException {
@@ -79,4 +84,10 @@ public class FileHelper {
         return fileList;
     }
 
+    public void clearFile() throws FileNotFoundException {
+        PrintWriter writer = new PrintWriter(this.file);
+        writer.print("");
+        writer.flush();
+        writer.close();
+    }
 }
