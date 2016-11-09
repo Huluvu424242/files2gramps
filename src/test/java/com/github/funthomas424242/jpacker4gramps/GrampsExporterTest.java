@@ -75,16 +75,31 @@ public class GrampsExporterTest {
     }
 
     @Test
-    public void createTargetArchivefile_ValidGrampsAndArchivfile()
+    public void createTargetArchivefile_ValidGrampsAndExistingValidArchivfile()
             throws IOException {
-        // prepare 
-        exporter = new GrampsExporter(grampsDatabasFile, targetArchive);
+        // prepare    
+        this.targetArchive.getParentFile().mkdirs();
+        this.targetArchive.createNewFile();
+        exporter = new GrampsExporter(grampsDatabasFile, this.targetArchive);
         // execution
         exporter.createArchivefile();
 
         // asserts
-        final File targetArchivFile = new File(
-                config.getString(PROP_TARGET_ARCHIV_FILENAME) + ".tgz");
+        assertTrue("Archiv wurde nicht angelegt", targetArchive.exists());
+    }
+
+    @Test
+    public void createTargetArchivefile_ValidGrampsAndNewValidArchivfile()
+            throws IOException {
+        // prepare 
+        final String fileName = "target/test/created/new"
+                + System.currentTimeMillis();
+        exporter = new GrampsExporter(grampsDatabasFile, new File(fileName));
+        // execution
+        exporter.createArchivefile();
+
+        // asserts
+        final File targetArchivFile = new File(fileName);
         assertTrue("Archiv wurde nicht angelegt", targetArchivFile.exists());
     }
 
