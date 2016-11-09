@@ -3,8 +3,14 @@ package com.github.funthomas424242.jpacker4gramps;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
+import java.io.IOException;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class GrampsExporter {
+
+    private Logger logger = LoggerFactory.getLogger(getClass().getName());
 
     protected File grampsFile;
     protected File targetArchive;
@@ -14,6 +20,9 @@ public class GrampsExporter {
     public GrampsExporter(final File grampsFile, final File targetArchive,
             final File mediaFolder) {
 
+        if (grampsFile == null || targetArchive == null) {
+            throw new IllegalArgumentException();
+        }
         this.grampsFile = grampsFile;
         this.mediaFolder = mediaFolder;
         this.targetArchive = targetArchive;
@@ -27,6 +36,18 @@ public class GrampsExporter {
     }
 
     protected void createArchivefile() {
+        try {
+            final File archivFolder = targetArchive.getParentFile();
+            if (archivFolder != null) {
+                archivFolder.mkdirs();
+            }
+            if (!targetArchive.createNewFile()) {
+                final FileHelper fileHelper = new FileHelper(targetArchive);
+                fileHelper.clearFile();
+            }
+        } catch (IOException e) {
+            logger.debug(targetArchive.getAbsolutePath(), e);
+        }
 
     }
 
