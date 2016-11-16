@@ -7,11 +7,14 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 
+import javax.activation.MimetypesFileTypeMap;
+
 import org.apache.commons.configuration2.Configuration;
 import org.apache.commons.configuration2.builder.fluent.Configurations;
 import org.apache.commons.configuration2.ex.ConfigurationException;
 import org.junit.Before;
 import org.junit.BeforeClass;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -22,15 +25,17 @@ public class GrampsExporterTest {
         .getLogger(GrampsExporterTest.class.getName());
 
     private static final String TEST_PROPERTIES_FILENAME = "test.properties";
+    private static final String PROP_TARGET_INVALIDARCHIV_FILENAME = "beispiel1.target.invalidarchiv.name";
     private static final String PROP_TARGET_ARCHIV_FILENAME = "beispiel1.target.archiv.name";
-
-    protected GrampsExporter exporter;
+    private static final String PROP_GRAMPS_FILENAME = "beispiel1.gramps.file";
 
     protected static Configuration config;
 
     private File grampsDatabasFile;
 
     private File mediaFolder;
+
+    private File invalidTargetArchive;
 
     private File targetArchive;
 
@@ -46,55 +51,56 @@ public class GrampsExporterTest {
 
     @Before
     public void setUp() {
-        grampsDatabasFile = new File(config.getString("beispiel1.gramps.file"));
+        grampsDatabasFile = new File(config.getString(PROP_GRAMPS_FILENAME));
         mediaFolder = new File(config.getString("beispiel1.media.folder"));
+        invalidTargetArchive = new File(
+                config.getString(PROP_TARGET_INVALIDARCHIV_FILENAME) + ".tgz");
         targetArchive = new File(
-                config.getString("beispiel1.target.archiv.name") + ".tgz");
-        exporter = new GrampsExporter(grampsDatabasFile, targetArchive,
-                mediaFolder);
+                config.getString(PROP_TARGET_ARCHIV_FILENAME) + ".tgz");
     }
 
     @Test(expected = IllegalArgumentException.class)
     public void createTargetArchivfile_InvalidFiles() {
-        exporter = new GrampsExporter(null, null);
+        new GrampsExporter(null, null);
         fail();
     }
 
     @Test(expected = IllegalArgumentException.class)
     public void createTargetArchivfile_InvalidGrampsfile() {
-        exporter = new GrampsExporter(null,
-                new File("target/test/create/create1.tgz"));
+        new GrampsExporter(null, new File("target/test/create/create1.tgz"));
         fail();
     }
 
     @Test(expected = IllegalArgumentException.class)
     public void createTargetArchivfile_InvalidArchivefile() {
-        exporter = new GrampsExporter(
-                new File("target/test/create/create2.tgz"), null);
+        new GrampsExporter(new File("target/test/create/create2.tgz"), null);
         fail();
     }
 
     @Test
-    public void createTargetArchivefile_ValidGrampsAndExistingValidArchivfile()
+    public void createInvalidTargetArchivefile_ValidGrampsAndExistingArchivfile()
             throws IOException {
         // prepare    
-        this.targetArchive.getParentFile().mkdirs();
-        this.targetArchive.createNewFile();
-        exporter = new GrampsExporter(grampsDatabasFile, this.targetArchive);
+        this.invalidTargetArchive.getParentFile().mkdirs();
+        this.invalidTargetArchive.createNewFile();
+        final GrampsExporter exporter = new GrampsExporter(grampsDatabasFile,
+                this.invalidTargetArchive);
         // execution
         exporter.createArchivefile();
 
         // asserts
-        assertTrue("Archiv wurde nicht angelegt", targetArchive.exists());
+        assertTrue("Archiv wurde nicht angelegt",
+                invalidTargetArchive.exists());
     }
 
     @Test
-    public void createTargetArchivefile_ValidGrampsAndNewValidArchivfile()
+    public void createInvalidTargetArchivefile_ValidGrampsAndNewArchivfile()
             throws IOException {
         // prepare 
         final String fileName = "target/test/created/new"
                 + System.currentTimeMillis();
-        exporter = new GrampsExporter(grampsDatabasFile, new File(fileName));
+        final GrampsExporter exporter = new GrampsExporter(grampsDatabasFile,
+                new File(fileName));
         // execution
         exporter.createArchivefile();
 
@@ -109,7 +115,8 @@ public class GrampsExporterTest {
         // prepare 
         final String fileName = "target/test/created"
                 + System.currentTimeMillis() + "/new";
-        exporter = new GrampsExporter(grampsDatabasFile, new File(fileName));
+        final GrampsExporter exporter = new GrampsExporter(grampsDatabasFile,
+                new File(fileName));
         // execution
         exporter.createArchivefile();
 
@@ -119,26 +126,36 @@ public class GrampsExporterTest {
     }
 
     @Test(expected = FileNotFoundException.class)
-    public void createTargetArchivefile_NoArchivFolder() throws IOException {
+    public void createInvalidTargetArchivefile_NoArchivFolder()
+            throws IOException {
         // prepare 
         final String fileName = "/";
-        exporter = new GrampsExporter(grampsDatabasFile, new File(fileName));
+        final GrampsExporter exporter = new GrampsExporter(grampsDatabasFile,
+                new File(fileName));
         // execution
         exporter.createArchivefile();
         // asserts
     }
 
-    //
-    //    @Test
-    //    public void readContentOfDatabaseFile() {
-    //        final StringBuffer content = exporter.getFileContent();
-    //        assertEquals(1, content.length());
-    //    }
-    //
-    //    @Test
-    //    public void readFilesOfMediaFolder()
-    //            throws FileNotFoundException, IOException {
-    //
-    //    }
+    @Test
+    @Ignore(value = "TypErkennung noch nicht fertig")
+    public void createValidTargetArchivefile_NewArchivFolderAndGrampsFile()
+            throws FileNotFoundException, IOException {
+        // prepare 
+        final String fileName = "target/test/created"
+                + System.currentTimeMillis() + "/new";
+        final GrampsExporter exporter = new GrampsExporter(grampsDatabasFile,
+                new File(fileName));
+        // execution
+        exporter.createArchivefile();
+        exporter.addGampsFile();
+
+        // asserts
+        final File targetArchivFile = new File(fileName);
+        assertTrue("Archiv wurde nicht angelegt", targetArchivFile.exists());
+        final String fileTyp = new MimetypesFileTypeMap()
+            .getContentType(targetArchivFile);
+        //TODO
+    }
 
 }
