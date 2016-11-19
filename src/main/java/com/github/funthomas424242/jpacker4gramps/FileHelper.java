@@ -14,6 +14,8 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Stack;
 
+import org.apache.commons.compress.archivers.tar.TarArchiveEntry;
+import org.apache.commons.compress.archivers.tar.TarArchiveInputStream;
 import org.apache.commons.compress.compressors.gzip.GzipCompressorInputStream;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -105,7 +107,9 @@ public class FileHelper {
             MagicMatchNotFoundException, MagicException {
 
         final MagicMatch match = Magic.getMagicMatch(file, false);
-        return "application/x-gzip".equals(match.getMimeType());
+        final String mimeType = match.getMimeType();
+        logger.debug("Mime-Type: " + mimeType);
+        return "application/x-gzip".equals(mimeType);
     }
 
     public boolean isValidTARArchive() throws MagicParseException,
@@ -115,7 +119,12 @@ public class FileHelper {
         return "application/x-tar".equals(match.getMimeType());
     }
 
-    public void unzipGPKGArchive(final File unzipedFile)
+    public boolean isValidZipArchive() throws MagicParseException,
+            MagicMatchNotFoundException, MagicException {
+        return isValidGPKGArchive();
+    }
+
+    public void unzipGPKGArchiveTo(final File unzipedFile)
             throws FileNotFoundException, IOException {
 
         FileInputStream fin = new FileInputStream(file);
@@ -130,4 +139,55 @@ public class FileHelper {
         out.close();
         gzIn.close();
     }
+
+    public void untarFileToDirectory(final File targetFolder)
+            throws IllegalArgumentException, FileNotFoundException, IOException,
+            MagicParseException, MagicMatchNotFoundException, MagicException {
+
+        if (!targetFolder.isDirectory()) {
+            throw new IllegalArgumentException("not a valid target folder: "
+                    + targetFolder.getAbsolutePath());
+        }
+        if (!this.isValidTARArchive()) {
+            throw new IllegalArgumentException(
+                    "not a valid tar file: " + file.getAbsolutePath());
+        }
+
+        final FileInputStream fin = new FileInputStream(file);
+        final BufferedInputStream in = new BufferedInputStream(fin);
+        final TarArchiveInputStream tarIn = new TarArchiveInputStream(in);
+        TarArchiveEntry tarEntry = tarIn.getNextTarEntry();
+        // tarIn is a TarArchiveInputStream
+        while (tarEntry != null) {// create a file with the same name as the tarEntry
+            final File destFile = new File(targetFolder, tarEntry.getName());
+            if (tarEntry.isDirectory()) {
+                logger.debug("mkdir: " + destFile.getCanonicalPath());
+                destFile.mkdirs();
+            } else {
+                logger.debug("untarring file: " + destFile.getCanonicalPath());
+                destFile.createNewFile();
+                final FileOutputStream fout = new FileOutputStream(destFile);
+                final byte[] buffer = new byte[1024];
+                int n = 0;
+                while (-1 != (n = tarIn.read(buffer))) {
+                    fout.write(buffer, 0, n);
+                }
+                fout.close();
+            }
+            tarEntry = tarIn.getNextTarEntry();
+        }
+        tarIn.close();
+    }
+
+    public void extractGrampsXMLTo(final File tmpTarFile,
+            final File tmpTARFolder, final File tmpGrampsZipFile,
+            final File targetGrampsFile)
+            throws FileNotFoundException, IOException, IllegalArgumentException,
+            MagicParseException, MagicMatchNotFoundException, MagicException {
+
+        unzipGPKGArchiveTo(tmpTarFile);
+        final FileHelper tarHelper = new FileHelper(tmpTarFile);
+        tarHelper.untarFileToDirectory(tmpTARFolder);
+    }
+
 }

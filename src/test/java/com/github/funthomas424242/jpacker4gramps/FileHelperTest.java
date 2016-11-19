@@ -17,6 +17,7 @@ import org.apache.commons.configuration2.builder.fluent.Configurations;
 import org.apache.commons.configuration2.ex.ConfigurationException;
 import org.junit.Before;
 import org.junit.BeforeClass;
+import org.junit.Ignore;
 import org.junit.Test;
 
 import net.sf.jmimemagic.MagicException;
@@ -229,11 +230,32 @@ public class FileHelperTest {
         targetTARFile.getParentFile().mkdirs();
         // execution
         final FileHelper fileHelper = new FileHelper(orgGrampsArchiveFile);
-        fileHelper.unzipGPKGArchive(targetTARFile);
+        fileHelper.unzipGPKGArchiveTo(targetTARFile);
 
         // assertiosn
         final FileHelper targetFileHelper = new FileHelper(targetTARFile);
         assertTrue(targetFileHelper.isValidTARArchive());
+    }
+
+    @Test
+    public void untarArchive_ValidArchive()
+            throws IllegalArgumentException, FileNotFoundException, IOException,
+            MagicParseException, MagicMatchNotFoundException, MagicException {
+        final File orgTarArchiveFile = new File(
+                "src/test/resources/beispiel2/TestDevelopment_2016-11-19.getarrt");
+        final String targetTARFolderName = "target/test/beispiel2/untarred"
+                + System.currentTimeMillis();
+        final File targetTARFolderFile = new File(targetTARFolderName);
+        targetTARFolderFile.mkdirs();
+        final FileHelper helper = new FileHelper(orgTarArchiveFile);
+
+        // execution
+        helper.untarFileToDirectory(targetTARFolderFile);
+
+        //asserts
+        final FileHelper targetHelper = new FileHelper(
+                new File(targetTARFolderFile, "data.gramps"));
+        assertTrue(targetHelper.isValidZipArchive());
     }
 
 }
