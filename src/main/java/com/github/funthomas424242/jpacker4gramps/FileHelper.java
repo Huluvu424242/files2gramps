@@ -1,7 +1,10 @@
 package com.github.funthomas424242.jpacker4gramps;
 
+import java.io.BufferedInputStream;
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.FilenameFilter;
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -11,8 +14,15 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Stack;
 
+import org.apache.commons.compress.compressors.gzip.GzipCompressorInputStream;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import net.sf.jmimemagic.Magic;
+import net.sf.jmimemagic.MagicException;
+import net.sf.jmimemagic.MagicMatch;
+import net.sf.jmimemagic.MagicMatchNotFoundException;
+import net.sf.jmimemagic.MagicParseException;
 
 public class FileHelper {
 
@@ -89,5 +99,35 @@ public class FileHelper {
         writer.print("");
         writer.flush();
         writer.close();
+    }
+
+    public boolean isValidGPKGArchive() throws MagicParseException,
+            MagicMatchNotFoundException, MagicException {
+
+        final MagicMatch match = Magic.getMagicMatch(file, false);
+        return "application/x-gzip".equals(match.getMimeType());
+    }
+
+    public boolean isValidTARArchive() throws MagicParseException,
+            MagicMatchNotFoundException, MagicException {
+
+        final MagicMatch match = Magic.getMagicMatch(file, false);
+        return "application/x-tar".equals(match.getMimeType());
+    }
+
+    public void unzipGPKGArchive(final File unzipedFile)
+            throws FileNotFoundException, IOException {
+
+        FileInputStream fin = new FileInputStream(file);
+        BufferedInputStream in = new BufferedInputStream(fin);
+        FileOutputStream out = new FileOutputStream(unzipedFile);
+        GzipCompressorInputStream gzIn = new GzipCompressorInputStream(in);
+        final byte[] buffer = new byte[1024];
+        int n = 0;
+        while (-1 != (n = gzIn.read(buffer))) {
+            out.write(buffer, 0, n);
+        }
+        out.close();
+        gzIn.close();
     }
 }

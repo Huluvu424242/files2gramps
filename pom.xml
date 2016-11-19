@@ -43,6 +43,16 @@
 	</distributionManagement>
 
 	<dependencies>
+		<!-- https://mvnrepository.com/artifact/org.apache.commons/commons-compress -->
+		<dependency>
+			<groupId>org.apache.commons</groupId>
+			<artifactId>commons-compress</artifactId>
+		</dependency>
+		<!-- https://mvnrepository.com/artifact/net.sf.jmimemagic/jmimemagic -->
+		<dependency>
+			<groupId>net.sf.jmimemagic</groupId>
+			<artifactId>jmimemagic</artifactId>
+		</dependency>
 		<dependency>
 			<groupId>org.slf4j</groupId>
 			<artifactId>slf4j-api</artifactId>
@@ -57,11 +67,6 @@
 			<artifactId>logback-core</artifactId>
 		</dependency>
 
-		<!-- https://mvnrepository.com/artifact/org.apache.commons/commons-compress -->
-		<dependency>
-			<groupId>org.apache.commons</groupId>
-			<artifactId>commons-compress</artifactId>
-		</dependency>
 		<!-- https://mvnrepository.com/artifact/junit/junit -->
 		<dependency>
 			<groupId>junit</groupId>
@@ -84,6 +89,18 @@
 
 	<dependencyManagement>
 		<dependencies>
+			<!-- https://mvnrepository.com/artifact/org.apache.commons/commons-compress -->
+			<dependency>
+				<groupId>org.apache.commons</groupId>
+				<artifactId>commons-compress</artifactId>
+				<version>1.12</version>
+			</dependency>
+			<!-- https://mvnrepository.com/artifact/net.sf.jmimemagic/jmimemagic -->
+			<dependency>
+				<groupId>net.sf.jmimemagic</groupId>
+				<artifactId>jmimemagic</artifactId>
+				<version>0.1.4</version>
+			</dependency>
 			<dependency>
 				<groupId>org.slf4j</groupId>
 				<artifactId>slf4j-api</artifactId>
@@ -99,13 +116,6 @@
 				<groupId>ch.qos.logback</groupId>
 				<artifactId>logback-core</artifactId>
 				<version>1.1.7</version>
-			</dependency>
-
-			<!-- https://mvnrepository.com/artifact/org.apache.commons/commons-compress -->
-			<dependency>
-				<groupId>org.apache.commons</groupId>
-				<artifactId>commons-compress</artifactId>
-				<version>1.12</version>
 			</dependency>
 			<!-- https://mvnrepository.com/artifact/junit/junit -->
 			<dependency>

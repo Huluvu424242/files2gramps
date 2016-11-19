@@ -1,10 +1,12 @@
 package com.github.funthomas424242.jpacker4gramps;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.List;
@@ -16,6 +18,10 @@ import org.apache.commons.configuration2.ex.ConfigurationException;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
+
+import net.sf.jmimemagic.MagicException;
+import net.sf.jmimemagic.MagicMatchNotFoundException;
+import net.sf.jmimemagic.MagicParseException;
 
 public class FileHelperTest {
 
@@ -181,6 +187,53 @@ public class FileHelperTest {
         assertTrue(resultFile.exists());
         assertTrue("File " + fileName + " wurde nicht korrekt gelöscht",
                 resultFile.length() == 0);
+    }
+
+    @Test
+    public void checkValidGPKGArchive_ValidArchiv() throws MagicParseException,
+            MagicMatchNotFoundException, MagicException {
+        final File orgGrampsArchiveFile = new File(
+                "src/test/resources/beispiel2/TestDevelopment_2016-11-19.gpkg");
+        final FileHelper fileHelper = new FileHelper(orgGrampsArchiveFile);
+        assertTrue(fileHelper.isValidGPKGArchive());
+    }
+
+    @Test
+    public void checkValidGPKGArchive_InValidArchiv()
+            throws MagicParseException, MagicMatchNotFoundException,
+            MagicException {
+        final File orgGrampsArchiveFile = new File(
+                "src/test/resources/beispiel2/TestDevelopment_2016-11-19.getarrt");
+        final FileHelper fileHelper = new FileHelper(orgGrampsArchiveFile);
+        assertFalse(fileHelper.isValidGPKGArchive());
+    }
+
+    @Test
+    public void checkValidTARArchive_ValidArchiv() throws MagicParseException,
+            MagicMatchNotFoundException, MagicException {
+        final File orgGrampsArchiveFile = new File(
+                "src/test/resources/beispiel2/TestDevelopment_2016-11-19.getarrt");
+        final FileHelper fileHelper = new FileHelper(orgGrampsArchiveFile);
+        assertTrue(fileHelper.isValidTARArchive());
+    }
+
+    @Test
+    public void unzipGPKGArchive_ValidArchiv()
+            throws FileNotFoundException, IOException, MagicParseException,
+            MagicMatchNotFoundException, MagicException {
+        final File orgGrampsArchiveFile = new File(
+                "src/test/resources/beispiel2/TestDevelopment_2016-11-19.gpkg");
+        final String targetTARFileName = "target/test/beispiel2/family"
+                + System.currentTimeMillis() + ".tar";
+        final File targetTARFile = new File(targetTARFileName);
+        targetTARFile.getParentFile().mkdirs();
+        // execution
+        final FileHelper fileHelper = new FileHelper(orgGrampsArchiveFile);
+        fileHelper.unzipGPKGArchive(targetTARFile);
+
+        // assertiosn
+        final FileHelper targetFileHelper = new FileHelper(targetTARFile);
+        assertTrue(targetFileHelper.isValidTARArchive());
     }
 
 }
