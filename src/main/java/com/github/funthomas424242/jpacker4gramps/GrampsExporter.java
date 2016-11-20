@@ -15,6 +15,7 @@ import org.apache.commons.compress.archivers.zip.ZipArchiveOutputStream;
 import org.apache.commons.compress.compressors.CompressorException;
 import org.apache.commons.compress.compressors.CompressorOutputStream;
 import org.apache.commons.compress.compressors.CompressorStreamFactory;
+import org.apache.commons.compress.compressors.gzip.GzipCompressorOutputStream;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -123,30 +124,17 @@ public class GrampsExporter {
         this.createArchivefile();
         this.createZippedGrampsFile();
 
-        final File tarFile = new File(this.tmpFolder, targetArchive.getName());
-        final FileOutputStream fOut = new FileOutputStream(tarFile);
-        final TarArchiveOutputStream tarOut = new TarArchiveOutputStream(fOut);
+        final FileOutputStream file_out = new FileOutputStream(targetArchive);
+        final BufferedOutputStream buffer_out = new BufferedOutputStream(
+                file_out);
+        final GzipCompressorOutputStream gzip_out = new GzipCompressorOutputStream(
+                buffer_out);
+        final TarArchiveOutputStream tarOut = new TarArchiveOutputStream(
+                gzip_out);
+
         this.addZippedGrampsFile(tarOut);
+
         tarOut.close();
-
-        // tar file gzippen
-        final FileInputStream fin = new FileInputStream(tarFile);
-        final BufferedInputStream in = new BufferedInputStream(fin);
-        final FileOutputStream fileOutputStream = new FileOutputStream(
-                targetArchive);
-        final BufferedOutputStream bufOutStream = new BufferedOutputStream(
-                fileOutputStream);
-        final CompressorOutputStream gzippedOut = new CompressorStreamFactory()
-            .createCompressorOutputStream(CompressorStreamFactory.GZIP,
-                    bufOutStream);
-        final byte[] buffer = new byte[1024];
-        int n = 0;
-        while (-1 != (n = in.read(buffer))) {
-            gzippedOut.write(buffer, 0, n);
-        }
-        gzippedOut.close();
-        in.close();
-
         return this.targetArchive;
     }
 }
