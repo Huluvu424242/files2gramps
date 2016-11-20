@@ -131,7 +131,8 @@ public class FileHelper {
             MagicParseException, MagicMatchNotFoundException, MagicException {
 
         final Set<String> mimeTypes = getDetectedMimeTypesOf();
-        return mimeTypes.contains("application/x-gramps-xml");
+        return mimeTypes.contains("application/x-gramps-xml")
+                || mimeTypes.contains("text/plain");
     }
 
     protected Set<String> getDetectedMimeTypesOf() throws MagicParseException,
