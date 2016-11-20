@@ -107,8 +107,7 @@ public class FileHelper {
             MagicMatchNotFoundException, MagicException {
 
         final MagicMatch match = Magic.getMagicMatch(file, false);
-        final String mimeType = match.getMimeType();
-        logger.debug("Mime-Type: " + mimeType);
+        final String mimeType = getAndlogMimeType(match);
         return "application/x-gzip".equals(mimeType);
     }
 
@@ -116,7 +115,8 @@ public class FileHelper {
             MagicMatchNotFoundException, MagicException {
 
         final MagicMatch match = Magic.getMagicMatch(file, false);
-        return "application/x-tar".equals(match.getMimeType());
+        final String mimeType = getAndlogMimeType(match);
+        return "application/x-tar".equals(mimeType);
     }
 
     public boolean isValidZipArchive() throws MagicParseException,
@@ -124,7 +124,20 @@ public class FileHelper {
         return isValidGPKGArchive();
     }
 
-    public void unzipGPKGArchiveTo(final File unzipedFile)
+    public boolean isValidGrampsXmlFile() throws IOException {
+
+        final String mimeType = Files.probeContentType(file.toPath());
+        logger.debug("Mime-Type: " + mimeType);
+        return "application/x-gramps-xml".equals(mimeType);
+    }
+
+    protected String getAndlogMimeType(final MagicMatch match) {
+        final String mimeType = match.getMimeType();
+        logger.debug("Mime-Type: " + mimeType);
+        return mimeType;
+    }
+
+    public void unzipArchiveTo(final File unzipedFile)
             throws FileNotFoundException, IOException {
 
         FileInputStream fin = new FileInputStream(file);
@@ -180,14 +193,16 @@ public class FileHelper {
     }
 
     public void extractGrampsXMLTo(final File tmpTarFile,
-            final File tmpTARFolder, final File tmpGrampsZipFile,
-            final File targetGrampsFile)
+            final File tmpTARFolder, final File targetGrampsFile)
             throws FileNotFoundException, IOException, IllegalArgumentException,
             MagicParseException, MagicMatchNotFoundException, MagicException {
 
-        unzipGPKGArchiveTo(tmpTarFile);
+        unzipArchiveTo(tmpTarFile);
         final FileHelper tarHelper = new FileHelper(tmpTarFile);
         tarHelper.untarFileToDirectory(tmpTARFolder);
+        final File tmpGrampsZipFile = new File(tmpTARFolder, "data.gramps");
+        final FileHelper zipHelper = new FileHelper(tmpGrampsZipFile);
+        zipHelper.unzipArchiveTo(targetGrampsFile);
     }
 
 }

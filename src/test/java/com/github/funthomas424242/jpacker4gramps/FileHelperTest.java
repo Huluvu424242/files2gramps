@@ -17,7 +17,6 @@ import org.apache.commons.configuration2.builder.fluent.Configurations;
 import org.apache.commons.configuration2.ex.ConfigurationException;
 import org.junit.Before;
 import org.junit.BeforeClass;
-import org.junit.Ignore;
 import org.junit.Test;
 
 import net.sf.jmimemagic.MagicException;
@@ -230,7 +229,7 @@ public class FileHelperTest {
         targetTARFile.getParentFile().mkdirs();
         // execution
         final FileHelper fileHelper = new FileHelper(orgGrampsArchiveFile);
-        fileHelper.unzipGPKGArchiveTo(targetTARFile);
+        fileHelper.unzipArchiveTo(targetTARFile);
 
         // assertiosn
         final FileHelper targetFileHelper = new FileHelper(targetTARFile);
@@ -256,6 +255,31 @@ public class FileHelperTest {
         final FileHelper targetHelper = new FileHelper(
                 new File(targetTARFolderFile, "data.gramps"));
         assertTrue(targetHelper.isValidZipArchive());
+    }
+
+    @Test
+    public void extractGrampsfile_FromValidArchive()
+            throws IllegalArgumentException, FileNotFoundException, IOException,
+            MagicParseException, MagicMatchNotFoundException, MagicException {
+        final File orgGPKGArchiveFile = new File(
+                "src/test/resources/beispiel2/TestDevelopment_2016-11-19.gpkg");
+        final File tmpTarFile = new File(
+                "target/test/beispiel2/TestDevelopment_2016-11-19.tar");
+        final String targetTARFolderName = "target/test/beispiel2/untarredX"
+                + System.currentTimeMillis();
+        final File targetTARFolderFile = new File(targetTARFolderName);
+        targetTARFolderFile.mkdirs();
+        final File targetGrampsFile = new File(
+                "target/test/beispiel2/data.gramps");
+        final FileHelper helper = new FileHelper(orgGPKGArchiveFile);
+
+        // execution
+        helper.extractGrampsXMLTo(tmpTarFile, targetTARFolderFile,
+                targetGrampsFile);
+
+        //asserts
+        final FileHelper targetHelper = new FileHelper(targetGrampsFile);
+        assertTrue(targetHelper.isValidGrampsXmlFile());
     }
 
 }
