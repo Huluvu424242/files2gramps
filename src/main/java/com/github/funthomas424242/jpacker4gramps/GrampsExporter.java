@@ -10,11 +10,7 @@ import java.io.IOException;
 
 import org.apache.commons.compress.archivers.tar.TarArchiveEntry;
 import org.apache.commons.compress.archivers.tar.TarArchiveOutputStream;
-import org.apache.commons.compress.archivers.zip.ZipArchiveEntry;
-import org.apache.commons.compress.archivers.zip.ZipArchiveOutputStream;
 import org.apache.commons.compress.compressors.CompressorException;
-import org.apache.commons.compress.compressors.CompressorOutputStream;
-import org.apache.commons.compress.compressors.CompressorStreamFactory;
 import org.apache.commons.compress.compressors.gzip.GzipCompressorOutputStream;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -71,22 +67,22 @@ public class GrampsExporter {
     protected void createZippedGrampsFile() throws IOException {
         final File zippedGrampsFile = new File(tmpFolder, "data.gramps");
         zippedGrampsFile.createNewFile();
-        final ZipArchiveOutputStream zipOutStream = new ZipArchiveOutputStream(
+        final FileOutputStream fileOutputStream = new FileOutputStream(
                 zippedGrampsFile);
-        final ZipArchiveEntry entry = new ZipArchiveEntry(zippedGrampsFile,
-                "data.gramps");
-        entry.setSize(zippedGrampsFile.length());
+        final BufferedOutputStream bufOutStream = new BufferedOutputStream(
+                fileOutputStream);
+        final GzipCompressorOutputStream gzipOutStream = new GzipCompressorOutputStream(
+                bufOutStream);
+
         final FileInputStream fin = new FileInputStream(this.grampsFile);
         final BufferedInputStream in = new BufferedInputStream(fin);
 
-        zipOutStream.putArchiveEntry(entry);
         final byte[] buffer = new byte[1024];
         int n = 0;
         while (-1 != (n = in.read(buffer))) {
-            zipOutStream.write(buffer, 0, n);
+            gzipOutStream.write(buffer, 0, n);
         }
-        zipOutStream.closeArchiveEntry();
-        zipOutStream.close();
+        gzipOutStream.close();
         in.close();
     }
 
