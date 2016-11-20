@@ -150,10 +150,21 @@ public class FileHelper {
         return mimeTypes;
     }
 
-    protected String getAndlogMagicNumberMimeType() throws MagicParseException,
-            MagicMatchNotFoundException, MagicException {
-        final MagicMatch match = Magic.getMagicMatch(file, true);
-        final String mimeType = match.getMimeType();
+    protected String getAndlogMagicNumberMimeType() {
+
+        if (file.length() < 1) {
+            logger.warn("file without content: " + file.getAbsolutePath());
+            return null;
+        }
+
+        String mimeType = null;
+        try {
+            final MagicMatch match = Magic.getMagicMatch(file, true);
+            mimeType = match.getMimeType();
+        } catch (MagicParseException | MagicMatchNotFoundException
+                | MagicException e) {
+            logger.error("invalid file structure", e);
+        }
         logger.debug("Mime-Type: " + mimeType);
         return mimeType;
     }
@@ -167,10 +178,11 @@ public class FileHelper {
     public void unzipArchiveTo(final File unzipedFile)
             throws FileNotFoundException, IOException {
 
-        FileInputStream fin = new FileInputStream(file);
-        BufferedInputStream in = new BufferedInputStream(fin);
-        FileOutputStream out = new FileOutputStream(unzipedFile);
-        GzipCompressorInputStream gzIn = new GzipCompressorInputStream(in);
+        final FileInputStream fin = new FileInputStream(file);
+        final BufferedInputStream in = new BufferedInputStream(fin);
+        final FileOutputStream out = new FileOutputStream(unzipedFile);
+        final GzipCompressorInputStream gzIn = new GzipCompressorInputStream(
+                in);
         final byte[] buffer = new byte[1024];
         int n = 0;
         while (-1 != (n = gzIn.read(buffer))) {
