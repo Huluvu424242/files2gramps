@@ -116,7 +116,7 @@ public class FileHelper {
     public boolean isValidTARArchive() throws MagicParseException,
             MagicMatchNotFoundException, MagicException {
 
-        final String mimeType = getAndlogMagicMimeType();
+        final String mimeType = getAndlogMagicNumberMimeType();
         return "application/x-tar".equals(mimeType);
     }
 
@@ -127,28 +127,29 @@ public class FileHelper {
         return mimeTypes.contains("application/x-gzip");
     }
 
-    public boolean isValidGrampsXmlFile() throws IOException {
+    public boolean isValidGrampsXmlFile() throws IOException,
+            MagicParseException, MagicMatchNotFoundException, MagicException {
 
-        final String mimeType = getAndlogStandardMimeType();
-        return "application/x-gramps-xml".equals(mimeType);
+        final Set<String> mimeTypes = getDetectedMimeTypesOf();
+        return mimeTypes.contains("application/x-gramps-xml");
     }
 
     protected Set<String> getDetectedMimeTypesOf() throws MagicParseException,
             MagicMatchNotFoundException, MagicException, IOException {
 
         final Set<String> mimeTypes = new HashSet<>();
-        final String magicMimeType = getAndlogMagicMimeType();
+        final String magicMimeType = getAndlogMagicNumberMimeType();
         if (magicMimeType != null) {
             mimeTypes.add(magicMimeType);
         }
-        final String systemMimeType = getAndlogStandardMimeType();
+        final String systemMimeType = getAndlogSystemMimeType();
         if (systemMimeType != null) {
             mimeTypes.add(systemMimeType);
         }
         return mimeTypes;
     }
 
-    protected String getAndlogMagicMimeType() throws MagicParseException,
+    protected String getAndlogMagicNumberMimeType() throws MagicParseException,
             MagicMatchNotFoundException, MagicException {
         final MagicMatch match = Magic.getMagicMatch(file, true);
         final String mimeType = match.getMimeType();
@@ -156,7 +157,7 @@ public class FileHelper {
         return mimeType;
     }
 
-    protected String getAndlogStandardMimeType() throws IOException {
+    protected String getAndlogSystemMimeType() throws IOException {
         final String mimeType = Files.probeContentType(file.toPath());
         logger.debug("Mime-Type: " + mimeType);
         return mimeType;
