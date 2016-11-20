@@ -1,4 +1,4 @@
-package com.github.funthomas424242.jpacker4gramps;
+package com.github.funthomas424242.files2gramps;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
@@ -18,6 +18,8 @@ import org.apache.commons.configuration2.ex.ConfigurationException;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
+
+import com.github.funthomas424242.files2gramps.FileHelper;
 
 import net.sf.jmimemagic.MagicException;
 import net.sf.jmimemagic.MagicMatchNotFoundException;

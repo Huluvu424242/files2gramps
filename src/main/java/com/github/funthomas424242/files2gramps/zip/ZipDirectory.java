@@ -6,7 +6,7 @@
 /*****************************************************************/
 // downloaded from:
 // http://www.avajava.com/tutorials/files/how-do-i-zip-a-directory-and-all-its-contents/ZipDirectory.java */                                                   */
-package com.github.funthomas424242.jpacker4gramps.zip;
+package com.github.funthomas424242.files2gramps.zip;
 
 import java.io.File;
 import java.io.FileInputStream;

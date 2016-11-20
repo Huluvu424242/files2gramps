@@ -1,4 +1,4 @@
-package com.github.funthomas424242.jpacker4gramps;
+package com.github.funthomas424242.files2gramps;
 
 import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;

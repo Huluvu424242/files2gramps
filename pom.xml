@@ -3,7 +3,7 @@
 	<modelVersion>4.0.0</modelVersion>
 
 	<groupId>com.github.funthomas424242</groupId>
-	<artifactId>jpacker4gramps</artifactId>
+	<artifactId>files2gramps</artifactId>
 	<version>0.0.0-SNAPSHOT</version>
 
 	<packaging>jar</packaging>
@@ -14,19 +14,19 @@
 	</properties>
 
 	<scm>
-		<url>https://github.com/FunThomas424242/jpacker4gramps</url>
-		<connection>scm:git:https://github.com/FunThomas424242/jpacker4gramps.git</connection>
-		<developerConnection>scm:git:https://github.com/FunThomas424242/jpacker4gramps.git</developerConnection>
+		<url>https://github.com/FunThomas424242/files2gramps</url>
+		<connection>scm:git:https://github.com/FunThomas424242/files2gramps.git</connection>
+		<developerConnection>scm:git:https://github.com/FunThomas424242/files2gramps.git</developerConnection>
 	</scm>
 
 	<ciManagement>
 		<system>Travis</system>
-		<url>https://travis-ci.org/FunThomas424242/jpacker4gramps</url>
+		<url>https://travis-ci.org/FunThomas424242/files2gramps</url>
 	</ciManagement>
 
 	<issueManagement>
 		<system>Issue</system>
-		<url>https://github.com/FunThomas424242/jpacker4gramps/issues</url>
+		<url>https://github.com/FunThomas424242/files2gramps/issues</url>
 	</issueManagement>
 
 	<distributionManagement>
