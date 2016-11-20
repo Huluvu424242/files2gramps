@@ -111,10 +111,6 @@ public class GrampsExporter {
 
     }
 
-    protected void writeArchiveFileContentAndClose() {
-
-    }
-
     public File createExportfile() throws IOException, CompressorException {
         this.createTmpFolder();
         this.createArchivefile();
