@@ -52,7 +52,7 @@ public class GrampsExporter {
 
     }
 
-    protected void writeArchiveFileAndClose() {
+    protected void writeArchiveFileContentAndClose() {
 
     }
 

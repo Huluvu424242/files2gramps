@@ -11,7 +11,9 @@ import java.io.PrintWriter;
 import java.nio.file.Files;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 import java.util.Stack;
 
 import org.apache.commons.compress.archivers.tar.TarArchiveEntry;
@@ -104,35 +106,58 @@ public class FileHelper {
     }
 
     public boolean isValidGPKGArchive() throws MagicParseException,
-            MagicMatchNotFoundException, MagicException {
+            MagicMatchNotFoundException, MagicException, IOException {
 
-        final MagicMatch match = Magic.getMagicMatch(file, false);
-        final String mimeType = getAndlogMimeType(match);
-        return "application/x-gzip".equals(mimeType);
+        final Set<String> mimeTypes = getDetectedMimeTypesOf();
+        return mimeTypes.contains("application/x-gramps-package")
+                || mimeTypes.contains("application/x-gzip");
     }
 
     public boolean isValidTARArchive() throws MagicParseException,
             MagicMatchNotFoundException, MagicException {
 
-        final MagicMatch match = Magic.getMagicMatch(file, false);
-        final String mimeType = getAndlogMimeType(match);
+        final String mimeType = getAndlogMagicMimeType();
         return "application/x-tar".equals(mimeType);
     }
 
     public boolean isValidZipArchive() throws MagicParseException,
-            MagicMatchNotFoundException, MagicException {
-        return isValidGPKGArchive();
+            MagicMatchNotFoundException, MagicException, IOException {
+
+        final Set<String> mimeTypes = getDetectedMimeTypesOf();
+        return mimeTypes.contains("application/x-gzip");
     }
 
     public boolean isValidGrampsXmlFile() throws IOException {
 
-        final String mimeType = Files.probeContentType(file.toPath());
-        logger.debug("Mime-Type: " + mimeType);
+        final String mimeType = getAndlogStandardMimeType();
         return "application/x-gramps-xml".equals(mimeType);
     }
 
-    protected String getAndlogMimeType(final MagicMatch match) {
+    protected Set<String> getDetectedMimeTypesOf() throws MagicParseException,
+            MagicMatchNotFoundException, MagicException, IOException {
+
+        final Set<String> mimeTypes = new HashSet<>();
+        final String magicMimeType = getAndlogMagicMimeType();
+        if (magicMimeType != null) {
+            mimeTypes.add(magicMimeType);
+        }
+        final String systemMimeType = getAndlogStandardMimeType();
+        if (systemMimeType != null) {
+            mimeTypes.add(systemMimeType);
+        }
+        return mimeTypes;
+    }
+
+    protected String getAndlogMagicMimeType() throws MagicParseException,
+            MagicMatchNotFoundException, MagicException {
+        final MagicMatch match = Magic.getMagicMatch(file, true);
         final String mimeType = match.getMimeType();
+        logger.debug("Mime-Type: " + mimeType);
+        return mimeType;
+    }
+
+    protected String getAndlogStandardMimeType() throws IOException {
+        final String mimeType = Files.probeContentType(file.toPath());
         logger.debug("Mime-Type: " + mimeType);
         return mimeType;
     }

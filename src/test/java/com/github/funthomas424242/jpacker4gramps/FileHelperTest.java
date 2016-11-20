@@ -191,7 +191,8 @@ public class FileHelperTest {
 
     @Test
     public void checkValidGPKGArchive_ValidArchiv() throws MagicParseException,
-            MagicMatchNotFoundException, MagicException {
+            MagicMatchNotFoundException, MagicException, IOException {
+
         final File orgGrampsArchiveFile = new File(
                 "src/test/resources/beispiel2/TestDevelopment_2016-11-19.gpkg");
         final FileHelper fileHelper = new FileHelper(orgGrampsArchiveFile);
@@ -201,7 +202,8 @@ public class FileHelperTest {
     @Test
     public void checkValidGPKGArchive_InValidArchiv()
             throws MagicParseException, MagicMatchNotFoundException,
-            MagicException {
+            MagicException, IOException {
+
         final File orgGrampsArchiveFile = new File(
                 "src/test/resources/beispiel2/TestDevelopment_2016-11-19.getarrt");
         final FileHelper fileHelper = new FileHelper(orgGrampsArchiveFile);

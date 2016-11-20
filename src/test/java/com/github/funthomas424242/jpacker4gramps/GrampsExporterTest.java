@@ -7,8 +7,6 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 
-import javax.activation.MimetypesFileTypeMap;
-
 import org.apache.commons.configuration2.Configuration;
 import org.apache.commons.configuration2.builder.fluent.Configurations;
 import org.apache.commons.configuration2.ex.ConfigurationException;
@@ -18,6 +16,10 @@ import org.junit.Ignore;
 import org.junit.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import net.sf.jmimemagic.MagicException;
+import net.sf.jmimemagic.MagicMatchNotFoundException;
+import net.sf.jmimemagic.MagicParseException;
 
 public class GrampsExporterTest {
 
@@ -138,24 +140,25 @@ public class GrampsExporterTest {
     }
 
     @Test
-    @Ignore(value = "TypErkennung noch nicht fertig")
+    @Ignore
     public void createValidTargetArchivefile_NewArchivFolderAndGrampsFile()
-            throws FileNotFoundException, IOException {
+            throws FileNotFoundException, IOException, MagicParseException,
+            MagicMatchNotFoundException, MagicException {
         // prepare 
-        final String fileName = "target/test/created"
-                + System.currentTimeMillis() + "/new";
+        final String targetArchivFileName = "target/test/created"
+                + System.currentTimeMillis() + "/new.gpkg";
         final GrampsExporter exporter = new GrampsExporter(grampsDatabasFile,
-                new File(fileName));
+                new File(targetArchivFileName));
         // execution
         exporter.createArchivefile();
         exporter.addGampsFile();
 
         // asserts
-        final File targetArchivFile = new File(fileName);
+        final File targetArchivFile = new File(targetArchivFileName);
         assertTrue("Archiv wurde nicht angelegt", targetArchivFile.exists());
-        final String fileTyp = new MimetypesFileTypeMap()
-            .getContentType(targetArchivFile);
-        //TODO
+        final FileHelper fileHelper = new FileHelper(targetArchivFile);
+        assertTrue("Not a valid gramps archive",
+                fileHelper.isValidGPKGArchive());
     }
 
 }
