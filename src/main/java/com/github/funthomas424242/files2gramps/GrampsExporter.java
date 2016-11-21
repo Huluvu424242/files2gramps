@@ -7,6 +7,7 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.OutputStream;
 
 import org.apache.commons.compress.archivers.tar.TarArchiveEntry;
 import org.apache.commons.compress.archivers.tar.TarArchiveOutputStream;
@@ -64,15 +65,11 @@ public class GrampsExporter {
         }
     }
 
-    protected void createZippedGrampsFile() throws IOException {
-        final File zippedGrampsFile = new File(tmpFolder, "data.gramps");
-        zippedGrampsFile.createNewFile();
-        final FileOutputStream fileOutputStream = new FileOutputStream(
-                zippedGrampsFile);
-        final BufferedOutputStream bufOutStream = new BufferedOutputStream(
-                fileOutputStream);
+    protected void createZippedGrampsFile(final OutputStream fileOutputStream)
+            throws IOException {
+
         final GzipCompressorOutputStream gzipOutStream = new GzipCompressorOutputStream(
-                bufOutStream);
+                fileOutputStream);
 
         final FileInputStream fin = new FileInputStream(this.grampsFile);
         final BufferedInputStream in = new BufferedInputStream(fin);
@@ -82,7 +79,7 @@ public class GrampsExporter {
         while (-1 != (n = in.read(buffer))) {
             gzipOutStream.write(buffer, 0, n);
         }
-        gzipOutStream.close();
+        gzipOutStream.flush();
         in.close();
     }
 
@@ -114,7 +111,15 @@ public class GrampsExporter {
     public File createExportfile() throws IOException, CompressorException {
         this.createTmpFolder();
         this.createArchivefile();
-        this.createZippedGrampsFile();
+
+        final File zippedGrampsFile = new File(tmpFolder, "data.gramps");
+        zippedGrampsFile.createNewFile();
+        final FileOutputStream fileOutputStream = new FileOutputStream(
+                zippedGrampsFile);
+        final BufferedOutputStream bufOutStream = new BufferedOutputStream(
+                fileOutputStream);
+        this.createZippedGrampsFile(bufOutStream);
+        bufOutStream.close();
 
         final FileOutputStream file_out = new FileOutputStream(targetArchive);
         final BufferedOutputStream buffer_out = new BufferedOutputStream(
