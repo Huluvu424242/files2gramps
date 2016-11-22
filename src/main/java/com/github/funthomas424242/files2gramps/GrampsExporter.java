@@ -128,21 +128,24 @@ public class GrampsExporter {
         final GzipCompressorInputStream gzip = zipper
             .getGzipCompressorInputStream();
 
-        final Thread zipperThread = new Thread(zipper);
-
         final TarArchiveEntry entry = new TarArchiveEntry(this.grampsFile,
                 this.grampsFile.getName());
         //entry.setSize(this.grampsFile.length());
         tarOut.putArchiveEntry(entry);
+        final Thread zipperThread = new Thread(zipper);
+        logger.debug("VOR START");
         zipperThread.start();
+        logger.debug("NACH START");
         //IOUtils.copy(gzip, tarOut);
         final byte[] buffer = new byte[1024];
         int n = 0;
+        logger.debug("VOR LESEN GZIP");
         while (-1 != (n = gzip.read(buffer))) {
             logger.debug("readZIP: " + n);
             tarOut.write(buffer, 0, n);
             logger.debug("writeTAR: " + n);
         }
+        logger.debug("NACH LESEN GZIP");
         tarOut.closeArchiveEntry();
         tarOut.flush();
         gzip.close();
