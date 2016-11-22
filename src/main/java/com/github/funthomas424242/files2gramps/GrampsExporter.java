@@ -98,10 +98,10 @@ public class GrampsExporter {
                     logger.debug("readFILE: " + n);
                     gzOut.write(buffer, 0, n);
                     logger.debug("writeZIP: " + n);
-                    new Thread();
-                    Thread.yield();
                 }
+                Thread.yield();
                 gzOut.flush();
+                gzOut.close();
                 gzIn.close();
             } catch (IOException e) {
                 logger.error(e.getMessage(), e);
@@ -113,7 +113,7 @@ public class GrampsExporter {
         }
 
         public void close() throws IOException {
-            gzOut.close();
+            //gzOut.close();
             //gzIn.close();
         }
 
