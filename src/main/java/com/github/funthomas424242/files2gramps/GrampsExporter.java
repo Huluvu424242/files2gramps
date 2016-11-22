@@ -70,33 +70,50 @@ public class GrampsExporter {
         }
     }
 
-    /**
-     * 
-     * @param fin
-     * @return
-     * @throws IOException
-     */
-    protected GzipCompressorInputStream zipContentOfStream(
-            final FileInputStream fin) throws IOException {
+    class Zipper implements Runnable {
 
-        //TODO aktuell Deadlock wegen Single Thread. 
-        // Das zippen soll ein Hilfsthread erledigen
-        final BufferedInputStream in = new BufferedInputStream(fin);
-        final PipedInputStream pIn = new PipedInputStream();
-        final PipedOutputStream pOut = new PipedOutputStream(pIn);
-        final GzipCompressorInputStream gzIn = new GzipCompressorInputStream(
-                pIn);
-        final GzipCompressorOutputStream gzOut = new GzipCompressorOutputStream(
-                pOut);
-        IOUtils.copy(in, gzOut);
-        return gzIn;
-    }
+        final BufferedInputStream fInStream;
+        final PipedOutputStream pOut;
+        final PipedInputStream pIn;
+        final GzipCompressorOutputStream gzOut;
+        final GzipCompressorInputStream gzIn;
+
+        public Zipper(final FileInputStream fInStream) throws IOException {
+            this.fInStream = new BufferedInputStream(fInStream);
+            // Thread: finInStram -> gzOut
+            this.pIn = new PipedInputStream();
+            this.pOut = new PipedOutputStream(pIn);
+            //pOut.connect(pIn);
+            this.gzOut = new GzipCompressorOutputStream(pOut);
+            this.gzIn = new GzipCompressorInputStream(pIn);
+        }
+
+        @Override
+        public void run() {
+            try {
+                IOUtils.copy(fInStream, gzOut);
+            } catch (IOException e) {
+                logger.error(e.getMessage(), e);
+            }
+        }
+
+        public GzipCompressorInputStream getGzipCompressorInputStream() {
+            return gzIn;
+        }
+
+    };
 
     protected void addZippedGrampsFile(final TarArchiveOutputStream tarOut)
             throws IOException {
 
         final FileInputStream fin = new FileInputStream(this.grampsFile);
-        final GzipCompressorInputStream gzip = zipContentOfStream(fin);
+
+        final Zipper zipper = new Zipper(fin);
+        final GzipCompressorInputStream gzip = zipper
+            .getGzipCompressorInputStream();
+
+        final Thread zipperThread = new Thread(zipper);
+        zipperThread.start();
 
         final TarArchiveEntry entry = new TarArchiveEntry(this.grampsFile,
                 this.grampsFile.getName());
