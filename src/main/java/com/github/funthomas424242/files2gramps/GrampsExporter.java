@@ -91,7 +91,18 @@ public class GrampsExporter {
         @Override
         public void run() {
             try {
-                IOUtils.copy(fInStream, gzOut);
+                //IOUtils.copy(fInStream, gzOut);
+                final byte[] buffer = new byte[1024];
+                int n = 0;
+                while (-1 != (n = fInStream.read(buffer))) {
+                    logger.debug("readFILE: " + n);
+                    gzOut.write(buffer, 0, n);
+                    logger.debug("writeZIP: " + n);
+                    new Thread();
+                    Thread.yield();
+                }
+                gzOut.flush();
+                gzIn.close();
             } catch (IOException e) {
                 logger.error(e.getMessage(), e);
             }
@@ -99,6 +110,11 @@ public class GrampsExporter {
 
         public GzipCompressorInputStream getGzipCompressorInputStream() {
             return gzIn;
+        }
+
+        public void close() throws IOException {
+            gzOut.close();
+            //gzIn.close();
         }
 
     };
@@ -113,14 +129,24 @@ public class GrampsExporter {
             .getGzipCompressorInputStream();
 
         final Thread zipperThread = new Thread(zipper);
-        zipperThread.start();
 
         final TarArchiveEntry entry = new TarArchiveEntry(this.grampsFile,
                 this.grampsFile.getName());
         //entry.setSize(this.grampsFile.length());
         tarOut.putArchiveEntry(entry);
-        IOUtils.copy(gzip, tarOut);
+        zipperThread.start();
+        //IOUtils.copy(gzip, tarOut);
+        final byte[] buffer = new byte[1024];
+        int n = 0;
+        while (-1 != (n = gzip.read(buffer))) {
+            logger.debug("readZIP: " + n);
+            tarOut.write(buffer, 0, n);
+            logger.debug("writeTAR: " + n);
+        }
         tarOut.closeArchiveEntry();
+        tarOut.flush();
+        gzip.close();
+        zipper.close();
     }
 
     protected void addMediaFolderFiles() {
