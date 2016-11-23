@@ -17,9 +17,6 @@ import org.junit.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.github.funthomas424242.files2gramps.FileHelper;
-import com.github.funthomas424242.files2gramps.GrampsExporter;
-
 import net.sf.jmimemagic.MagicException;
 import net.sf.jmimemagic.MagicMatchNotFoundException;
 import net.sf.jmimemagic.MagicParseException;
@@ -33,11 +30,13 @@ public class GrampsExporterTest {
     private static final String PROP_TARGET_INVALIDARCHIV_FILENAME = "beispiel1.target.invalidarchiv.name";
     private static final String PROP_TARGET_ARCHIV_FILENAME = "beispiel1.target.archiv.name";
     private static final String PROP_GRAMPS_FILENAME = "beispiel1.gramps.file";
+    private static final String PROP_GRAMPS_FILENAME_VALIDFILE = "beispiel1.gramps.file.valid";
 
     protected static Configuration config;
 
     private File tmpFolder;
     private File grampsDatabasFile;
+    private File grampsDatabasFileValid;
     private File mediaFolder;
 
     private File targetArchive;
@@ -58,6 +57,8 @@ public class GrampsExporterTest {
         tmpFolder = new File("target/test/packer/tmpFolder");
         tmpFolder.mkdirs();
         grampsDatabasFile = new File(config.getString(PROP_GRAMPS_FILENAME));
+        grampsDatabasFileValid = new File(
+                config.getString(PROP_GRAMPS_FILENAME_VALIDFILE));
         mediaFolder = new File(config.getString("beispiel1.media.folder"));
         invalidTargetArchive = new File(
                 config.getString(PROP_TARGET_INVALIDARCHIV_FILENAME) + ".tgz");
@@ -155,7 +156,7 @@ public class GrampsExporterTest {
         final File tmpFolder = new File("target/test/beispiel2/tmpFolder");
 
         final GrampsExporter exporter = new GrampsExporter(tmpFolder,
-                grampsDatabasFile, new File(targetArchivFileName));
+                grampsDatabasFileValid, new File(targetArchivFileName));
         // execution
         final File exportFile = exporter.createExportfile();
 

@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE database PUBLIC "-//Gramps//DTD Gramps XML 1.6.0//EN"
+"http://gramps-project.org/xml/1.6.0/grampsxml.dtd">
+<database xmlns="http://gramps-project.org/xml/1.6.0/">
+  <header>
+    <created date="2016-11-19" version="4.1.1"/>
+    <researcher>
+    </researcher>
+  </header>
+  <events>
+    <event handle="_d74ec6b6c9a9b1c0e608b7563" change="1479583451" id="E0000">
+      <type>Marriage</type>
+      <dateval val="2007-09-11"/>
+    </event>
+    <event handle="_d74ec83bd0f5799dc549104a6c0" change="1479583542" id="E0001">
+      <type>Birth</type>
+      <dateval val="1968-12-25"/>
+    </event>
+  </events>
+  <people>
+    <person handle="_d74ec585a8b53ada2cae92f23be" change="1479583544" id="I0000">
+      <gender>M</gender>
+      <name type="Birth Name">
+        <first>Thomas</first>
+        <call>Thomas</call>
+        <surname>Michel</surname>
+        <nick>Stachel</nick>
+      </name>
+      <name alt="1" type="Married Name">
+        <first>Thomas</first>
+        <surname>Schubert</surname>
+      </name>
+      <eventref hlink="_d74ec6b6c9a9b1c0e608b7563" role="Groom"/>
+      <eventref hlink="_d74ec83bd0f5799dc549104a6c0" role="Primary"/>
+    </person>
+  </people>
+</database>
