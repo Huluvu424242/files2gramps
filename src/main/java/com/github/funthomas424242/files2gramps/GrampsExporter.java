@@ -124,16 +124,11 @@ public class GrampsExporter {
         logger.debug("VOR START");
         zipperThread.start();
         logger.debug("NACH START");
-        //IOUtils.copy(gzip, tarOut);
-        final byte[] buffer = new byte[1024];
-        int n = 0;
+
         logger.debug("VOR LESEN GZIP");
-        while (-1 != (n = gzip.read(buffer))) {
-            logger.debug("readZIP: " + n);
-            tarOut.write(buffer, 0, n);
-            logger.debug("writeTAR: " + n);
-        }
+        IOUtils.copy(gzip, tarOut);
         logger.debug("NACH LESEN GZIP");
+
         tarOut.closeArchiveEntry();
         tarOut.flush();
         gzip.close();
