@@ -3,6 +3,7 @@ package com.github.funthomas424242.files2gramps.gzip;
 import java.io.BufferedInputStream;
 import java.io.FileInputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.PipedInputStream;
 import java.io.PipedOutputStream;
 
@@ -47,7 +48,7 @@ public class GZipper implements Runnable {
         }
     }
 
-    public GzipCompressorInputStream getGzipCompressorInputStream() {
+    public InputStream getNewInputStream() {
         return gzIn;
     }
 

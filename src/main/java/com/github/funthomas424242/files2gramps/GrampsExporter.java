@@ -6,11 +6,11 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
 
 import org.apache.commons.compress.archivers.tar.TarArchiveEntry;
 import org.apache.commons.compress.archivers.tar.TarArchiveOutputStream;
 import org.apache.commons.compress.compressors.CompressorException;
-import org.apache.commons.compress.compressors.gzip.GzipCompressorInputStream;
 import org.apache.commons.compress.compressors.gzip.GzipCompressorOutputStream;
 import org.apache.commons.compress.utils.IOUtils;
 import org.slf4j.Logger;
@@ -74,8 +74,7 @@ public class GrampsExporter {
         final FileInputStream fin = new FileInputStream(this.grampsFile);
 
         final GZipper zipper = new GZipper(fin);
-        final GzipCompressorInputStream gzip = zipper
-            .getGzipCompressorInputStream();
+        final InputStream gzip = zipper.getNewInputStream();
 
         final TarArchiveEntry entry = new TarArchiveEntry(this.grampsFile,
                 this.grampsFile.getName());
