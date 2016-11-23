@@ -1,14 +1,11 @@
 package com.github.funthomas424242.files2gramps;
 
-import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.io.PipedInputStream;
-import java.io.PipedOutputStream;
 
 import org.apache.commons.compress.archivers.tar.TarArchiveEntry;
 import org.apache.commons.compress.archivers.tar.TarArchiveOutputStream;
@@ -19,9 +16,12 @@ import org.apache.commons.compress.utils.IOUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.github.funthomas424242.files2gramps.gzip.GZipper;
+
 public class GrampsExporter {
 
-    private Logger logger = LoggerFactory.getLogger(getClass().getName());
+    final protected Logger logger = LoggerFactory
+        .getLogger(getClass().getName());
 
     protected File tmpFolder;
     protected File grampsFile;
@@ -68,54 +68,17 @@ public class GrampsExporter {
         }
     }
 
-    class Zipper implements Runnable {
-
-        final BufferedInputStream fInStream;
-        final PipedOutputStream pOut;
-        final PipedInputStream pIn;
-        final GzipCompressorOutputStream gzOut;
-        final GzipCompressorInputStream gzIn;
-
-        public Zipper(final FileInputStream fInStream) throws IOException {
-            this.fInStream = new BufferedInputStream(fInStream);
-            // Thread: finInStram -> gzOut
-            this.pIn = new PipedInputStream();
-            this.pOut = new PipedOutputStream(pIn);
-            this.gzOut = new GzipCompressorOutputStream(pOut);
-            this.gzIn = new GzipCompressorInputStream(pIn, false);
-        }
-
-        @Override
-        public void run() {
-            try {
-                IOUtils.copy(fInStream, gzOut);
-                Thread.yield();
-                gzOut.flush();
-                gzOut.close();
-                //pIn.close();
-            } catch (IOException e) {
-                logger.error(e.getMessage(), e);
-            }
-        }
-
-        public GzipCompressorInputStream getGzipCompressorInputStream() {
-            return gzIn;
-        }
-
-    };
-
     protected void addZippedGrampsFile(final TarArchiveOutputStream tarOut)
             throws IOException, CompressorException {
 
         final FileInputStream fin = new FileInputStream(this.grampsFile);
 
-        final Zipper zipper = new Zipper(fin);
+        final GZipper zipper = new GZipper(fin);
         final GzipCompressorInputStream gzip = zipper
             .getGzipCompressorInputStream();
 
         final TarArchiveEntry entry = new TarArchiveEntry(this.grampsFile,
                 this.grampsFile.getName());
-        //entry.setSize(this.grampsFile.length());
         tarOut.putArchiveEntry(entry);
         final Thread zipperThread = new Thread(zipper);
         logger.debug("VOR START");
