@@ -7,10 +7,8 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.io.OutputStream;
 import java.io.PipedInputStream;
 import java.io.PipedOutputStream;
-import java.util.zip.GZIPInputStream;
 
 import org.apache.commons.compress.archivers.tar.TarArchiveEntry;
 import org.apache.commons.compress.archivers.tar.TarArchiveOutputStream;
@@ -83,19 +81,18 @@ public class GrampsExporter {
             // Thread: finInStram -> gzOut
             this.pIn = new PipedInputStream();
             this.pOut = new PipedOutputStream(pIn);
-            //pOut.connect(pIn);
             this.gzOut = new GzipCompressorOutputStream(pOut);
-            this.gzIn = new GzipCompressorInputStream(pIn);
+            this.gzIn = new GzipCompressorInputStream(pIn, false);
         }
 
         @Override
         public void run() {
             try {
                 IOUtils.copy(fInStream, gzOut);
+                Thread.yield();
                 gzOut.flush();
                 gzOut.close();
-                gzIn.close();
-                Thread.yield();
+                //pIn.close();
             } catch (IOException e) {
                 logger.error(e.getMessage(), e);
             }
@@ -108,7 +105,7 @@ public class GrampsExporter {
     };
 
     protected void addZippedGrampsFile(final TarArchiveOutputStream tarOut)
-            throws IOException {
+            throws IOException, CompressorException {
 
         final FileInputStream fin = new FileInputStream(this.grampsFile);
 
