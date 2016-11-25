@@ -7,6 +7,8 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
 
 import org.apache.commons.compress.archivers.tar.TarArchiveEntry;
 import org.apache.commons.compress.archivers.tar.TarArchiveOutputStream;
@@ -20,31 +22,33 @@ public class GrampsExporter {
 
     private Logger logger = LoggerFactory.getLogger(getClass().getName());
 
-    protected File tmpFolder;
+    protected Path tmpFolderPath;
     protected File grampsFile;
     protected File targetArchive;
 
     protected File mediaFolder;
 
-    public GrampsExporter(final File tmpFolder, final File grampsFile,
-            final File targetArchive, final File mediaFolder) {
+    public GrampsExporter(final String tmpFolderPrefix, final File grampsFile,
+            final File targetArchive, final File mediaFolder)
+            throws IOException {
 
-        if (tmpFolder == null || grampsFile == null || targetArchive == null) {
+        if (tmpFolderPrefix == null || tmpFolderPrefix.length() < 1
+                || grampsFile == null || targetArchive == null) {
             throw new IllegalArgumentException();
         }
-        this.tmpFolder = tmpFolder;
+        this.tmpFolderPath = Files.createTempDirectory(tmpFolderPrefix);
         this.grampsFile = grampsFile;
         this.mediaFolder = mediaFolder;
         this.targetArchive = targetArchive;
     }
 
-    public GrampsExporter(final File tmpFolder, final File grampsFile,
-            final File targetArchive) {
-        this(tmpFolder, grampsFile, targetArchive, null);
+    public GrampsExporter(final String tmpFolderPrefix, final File grampsFile,
+            final File targetArchive) throws IOException {
+        this(tmpFolderPrefix, grampsFile, targetArchive, null);
     }
 
     protected void createTmpFolder() {
-        tmpFolder.mkdirs();
+        tmpFolderPath.toFile().mkdirs();
     }
 
     /**
@@ -66,7 +70,8 @@ public class GrampsExporter {
     }
 
     protected void createZippedGrampsFile() throws IOException {
-        final File zippedGrampsFile = new File(tmpFolder, "data.gramps");
+        final File zippedGrampsFile = new File(tmpFolderPath.toFile(),
+                "data.gramps");
         zippedGrampsFile.createNewFile();
         final FileOutputStream fileOutputStream = new FileOutputStream(
                 zippedGrampsFile);
@@ -86,7 +91,8 @@ public class GrampsExporter {
     protected void addZippedGrampsFile(
             final TarArchiveOutputStream tarOutStream) throws IOException {
 
-        final File zippedGrampsFile = new File(tmpFolder, "data.gramps");
+        final File zippedGrampsFile = new File(tmpFolderPath.toFile(),
+                "data.gramps");
         TarArchiveEntry entry = new TarArchiveEntry(zippedGrampsFile,
                 "data.gramps");
         entry.setSize(zippedGrampsFile.length());
