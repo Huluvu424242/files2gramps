@@ -152,7 +152,7 @@ public class GrampsExporterTest {
         // prepare 
         final String targetArchivFileName = "target/test/created"
                 + System.currentTimeMillis() + "/new";
-        final String tmpFolderPrefix = "tmpFolder";
+        final String tmpFolderPrefix = "tmpFolderBeispiel2";
 
         final GrampsExporter exporter = new GrampsExporter(tmpFolderPrefix,
                 grampsDatabasFile, new File(targetArchivFileName));
