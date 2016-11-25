@@ -166,4 +166,26 @@ public class GrampsExporterTest {
                 fileHelper.isValidGPKGArchive());
     }
 
+    @Test
+    public void createValidTargetArchivefile_WithValidMediaFolder()
+            throws FileNotFoundException, IOException, MagicParseException,
+            MagicMatchNotFoundException, MagicException, CompressorException {
+        // prepare 
+        final String targetArchivFileName = "target/test/created"
+                + System.currentTimeMillis() + "/new";
+        final String tmpFolderPrefix = "tmpFolderBeispiel2";
+
+        final GrampsExporter exporter = new GrampsExporter(tmpFolderPrefix,
+                grampsDatabasFile, new File(targetArchivFileName),
+                new File("src/test/resources/beispiel1/media"));
+        // execution
+        final File exportFile = exporter.createExportfile();
+
+        // asserts
+        assertTrue("Archiv wurde nicht angelegt", exportFile.exists());
+        final FileHelper fileHelper = new FileHelper(exportFile);
+        assertTrue("Not a valid gramps archive",
+                fileHelper.isValidGPKGArchive());
+    }
+
 }

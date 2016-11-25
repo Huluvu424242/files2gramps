@@ -106,7 +106,24 @@ public class GrampsExporter {
         in.close();
     }
 
-    protected void addMediaFolderFiles() {
+    protected void addMediaFolderFiles(
+            final TarArchiveOutputStream tarOutStream) throws IOException {
+        if (mediaFolder == null) {
+            return;
+        }
+        final FileHelper fileHelper = new FileHelper(mediaFolder);
+
+        for (File file : fileHelper.getRecursiveFilelistOfFolder()) {
+            logger
+                .debug("Add to archive media file: " + file.getAbsolutePath());
+            final TarArchiveEntry tarEntry = new TarArchiveEntry(file,
+                    file.getName());
+            tarOutStream.putArchiveEntry(tarEntry);
+            final FileInputStream inStream = new FileInputStream(file);
+            IOUtils.copy(inStream, tarOutStream);
+            tarOutStream.closeArchiveEntry();
+            inStream.close();
+        }
 
     }
 
@@ -124,6 +141,7 @@ public class GrampsExporter {
                 gzip_out);
 
         this.addZippedGrampsFile(tarOut);
+        addMediaFolderFiles(tarOut);
 
         tarOut.close();
         return this.targetArchive;
