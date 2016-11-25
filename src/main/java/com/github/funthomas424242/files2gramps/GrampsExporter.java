@@ -116,13 +116,18 @@ public class GrampsExporter {
         for (File file : fileHelper.getRecursiveFilelistOfFolder()) {
             logger
                 .debug("Add to archive media file: " + file.getAbsolutePath());
+            final String entryName = file.getCanonicalPath().substring(
+                    mediaFolder.getCanonicalPath().length() + 1,
+                    file.getCanonicalPath().length());
+            logger.debug("as tar entry with name: " + entryName);
             final TarArchiveEntry tarEntry = new TarArchiveEntry(file,
-                    file.getName());
-            tarOutStream.putArchiveEntry(tarEntry);
+                    entryName);
             tarEntry.setSize(file.length());
+            tarOutStream.putArchiveEntry(tarEntry);
             final FileInputStream inStream = new FileInputStream(file);
             IOUtils.copy(inStream, tarOutStream);
             tarOutStream.closeArchiveEntry();
+            tarOutStream.flush();
             inStream.close();
         }
 
@@ -141,8 +146,8 @@ public class GrampsExporter {
         final TarArchiveOutputStream tarOut = new TarArchiveOutputStream(
                 gzip_out);
 
-        this.addZippedGrampsFile(tarOut);
         addMediaFolderFiles(tarOut);
+        this.addZippedGrampsFile(tarOut);
 
         tarOut.close();
         return this.targetArchive;
