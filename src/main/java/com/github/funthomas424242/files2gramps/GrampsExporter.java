@@ -12,6 +12,7 @@ import org.apache.commons.compress.archivers.tar.TarArchiveEntry;
 import org.apache.commons.compress.archivers.tar.TarArchiveOutputStream;
 import org.apache.commons.compress.compressors.CompressorException;
 import org.apache.commons.compress.compressors.gzip.GzipCompressorOutputStream;
+import org.apache.commons.compress.utils.IOUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -76,12 +77,8 @@ public class GrampsExporter {
 
         final FileInputStream fin = new FileInputStream(this.grampsFile);
         final BufferedInputStream in = new BufferedInputStream(fin);
+        IOUtils.copy(in, gzipOutStream);
 
-        final byte[] buffer = new byte[1024];
-        int n = 0;
-        while (-1 != (n = in.read(buffer))) {
-            gzipOutStream.write(buffer, 0, n);
-        }
         gzipOutStream.close();
         in.close();
     }
@@ -97,12 +94,8 @@ public class GrampsExporter {
 
         final FileInputStream fin = new FileInputStream(zippedGrampsFile);
         final BufferedInputStream in = new BufferedInputStream(fin);
+        IOUtils.copy(in, tarOutStream);
 
-        final byte[] buffer = new byte[1024];
-        int n = 0;
-        while (-1 != (n = in.read(buffer))) {
-            tarOutStream.write(buffer, 0, n);
-        }
         tarOutStream.closeArchiveEntry();
         in.close();
     }
