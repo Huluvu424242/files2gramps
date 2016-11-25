@@ -119,6 +119,7 @@ public class GrampsExporter {
             final TarArchiveEntry tarEntry = new TarArchiveEntry(file,
                     file.getName());
             tarOutStream.putArchiveEntry(tarEntry);
+            tarEntry.setSize(file.length());
             final FileInputStream inStream = new FileInputStream(file);
             IOUtils.copy(inStream, tarOutStream);
             tarOutStream.closeArchiveEntry();
