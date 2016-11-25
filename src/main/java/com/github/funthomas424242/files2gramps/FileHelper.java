@@ -19,6 +19,7 @@ import java.util.Stack;
 import org.apache.commons.compress.archivers.tar.TarArchiveEntry;
 import org.apache.commons.compress.archivers.tar.TarArchiveInputStream;
 import org.apache.commons.compress.compressors.gzip.GzipCompressorInputStream;
+import org.apache.commons.io.IOUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -183,11 +184,7 @@ public class FileHelper {
         final FileOutputStream out = new FileOutputStream(unzipedFile);
         final GzipCompressorInputStream gzIn = new GzipCompressorInputStream(
                 in);
-        final byte[] buffer = new byte[1024];
-        int n = 0;
-        while (-1 != (n = gzIn.read(buffer))) {
-            out.write(buffer, 0, n);
-        }
+        IOUtils.copy(gzIn, out);
         out.close();
         gzIn.close();
     }
@@ -219,11 +216,7 @@ public class FileHelper {
                 logger.debug("untarring file: " + destFile.getCanonicalPath());
                 destFile.createNewFile();
                 final FileOutputStream fout = new FileOutputStream(destFile);
-                final byte[] buffer = new byte[1024];
-                int n = 0;
-                while (-1 != (n = tarIn.read(buffer))) {
-                    fout.write(buffer, 0, n);
-                }
+                IOUtils.copy(tarIn, fout);
                 fout.close();
             }
             tarEntry = tarIn.getNextTarEntry();
