@@ -16,7 +16,7 @@
 		<url>https://github.com/FunThomas424242/files2gramps</url>
 		<connection>scm:git:https://github.com/FunThomas424242/files2gramps.git</connection>
 		<developerConnection>scm:git:https://github.com/FunThomas424242/files2gramps.git</developerConnection>
-	  <tag>HEAD</tag>
+	    <tag>HEAD</tag>
   </scm>
 
 	<ciManagement>
