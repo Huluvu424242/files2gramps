@@ -176,8 +176,7 @@ public class GrampsExporterTest {
         final String tmpFolderPrefix = "tmpFolderBeispiel2";
 
         final GrampsExporter exporter = new GrampsExporter(tmpFolderPrefix,
-                grampsDatabasFile, new File(targetArchivFileName),
-                new File("src/test/resources/beispiel1/media"));
+                grampsDatabasFile, new File(targetArchivFileName), mediaFolder);
         // execution
         final File exportFile = exporter.createExportfile();
 
