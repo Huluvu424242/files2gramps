@@ -18,15 +18,17 @@ Then you can make a instance of GrampsExporter and call the createExportfile() m
 See the following code snippet how to use.
 
 ```
-@Test
-public void createValidTargetArchivefile_WithValidMediaFolder()
+   
+    @Test
+    public void createValidTargetArchivefile_WithValidMediaFolder()
         throws FileNotFoundException, IOException, MagicParseException,
         MagicMatchNotFoundException, MagicException, CompressorException {
+  
     // prepare 
     final String targetArchivFileName = "target/test/created"
             + System.currentTimeMillis() + "/new";
     final String tmpFolderPrefix = "tmpFolderBeispiel2";
-
+    
     final GrampsExporter exporter = new GrampsExporter(tmpFolderPrefix,
             grampsDatabasFile, new File(targetArchivFileName), mediaFolder);
     // execution
@@ -37,5 +39,6 @@ public void createValidTargetArchivefile_WithValidMediaFolder()
     final FileHelper fileHelper = new FileHelper(exportFile);
     assertTrue("Not a valid gramps archive",
             fileHelper.isValidGPKGArchive());
-} 
+    }
+     
 ```
