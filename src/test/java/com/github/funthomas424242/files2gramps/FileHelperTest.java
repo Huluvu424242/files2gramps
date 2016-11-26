@@ -297,6 +297,23 @@ public class FileHelperTest {
         fail();
     }
 
+    @Test(expected = IllegalArgumentException.class)
+    public void untarArchive_InvalidTargetFolder()
+            throws IllegalArgumentException, FileNotFoundException, IOException,
+            MagicParseException, MagicMatchNotFoundException, MagicException {
+        final File orgTarArchiveFile = new File("target/test/beispiel3.txt");
+        final String targetTARFolderName = "target/test/untarredfoldertest"
+                + System.currentTimeMillis();
+        new File(targetTARFolderName).createNewFile();
+        final File targetTARFolderFile = new File(targetTARFolderName);
+        targetTARFolderFile.mkdirs();
+        final FileHelper helper = new FileHelper(orgTarArchiveFile);
+
+        // execution
+        helper.untarFileToDirectory(targetTARFolderFile);
+        fail();
+    }
+
     @Test
     public void extractGrampsfile_FromValidArchive()
             throws IllegalArgumentException, FileNotFoundException, IOException,
