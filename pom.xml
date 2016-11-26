@@ -31,12 +31,12 @@
 
 	<distributionManagement>
 		<snapshotRepository>
-			<id>snapshots</id>
+			<id>bintray-funthomas424242-snapshots</id>
 			<name>oss-jfrog-artifactory-snapshots</name>
 			<url>https://oss.jfrog.org/artifactory/oss-snapshot-local</url>
 		</snapshotRepository>
 		<repository>
-			<id>bintray-funthomas424242-dsl</id>
+			<id>bintray-funthomas424242-releases</id>
 			<name>oss-jfrog-artifactory-releases</name>
 			<url>https://oss.jfrog.org/artifactory/oss-release-local</url>
 		</repository>
