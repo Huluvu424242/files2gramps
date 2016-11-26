@@ -175,7 +175,7 @@
 						<id>package-assemblies</id>
 						<phase>install</phase>
 						<goals>
-						<goal>single</goal>
+							<goal>single</goal>
 						</goals>
 						<configuration>
 							<descriptorRefs>
