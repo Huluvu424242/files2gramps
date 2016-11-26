@@ -2,6 +2,7 @@ package com.github.funthomas424242.files2gramps;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 
@@ -213,12 +214,31 @@ public class FileHelperTest {
     }
 
     @Test
-    public void checkValidTARArchive_ValidArchiv() throws MagicParseException,
-            MagicMatchNotFoundException, MagicException {
+    public void checkValidTARArchive_ValidTarArchiv()
+            throws MagicParseException, MagicMatchNotFoundException,
+            MagicException {
         final File orgGrampsArchiveFile = new File(
                 "src/test/resources/beispiel2/TestDevelopment_2016-11-19.getarrt");
         final FileHelper fileHelper = new FileHelper(orgGrampsArchiveFile);
         assertTrue(fileHelper.isValidTARArchive());
+    }
+
+    @Test
+    public void checkValidTARArchive_EmptyFile() throws MagicParseException,
+            MagicMatchNotFoundException, MagicException {
+        final File tarArchiveFile = new File("target/test/beispiel3.txt");
+        final FileHelper fileHelper = new FileHelper(tarArchiveFile);
+        assertFalse(fileHelper.isValidTARArchive());
+    }
+
+    @Test
+    public void checkValidTARArchive_FileWithoutMagicNumber()
+            throws MagicParseException, MagicMatchNotFoundException,
+            MagicException {
+        final File tarArchiveFile = new File(
+                "src/test/resources/beispiel1/database/MagicNotFound.gz");
+        final FileHelper fileHelper = new FileHelper(tarArchiveFile);
+        assertNull(fileHelper.getAndlogMagicNumberMimeType());
     }
 
     @Test
