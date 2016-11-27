@@ -1,9 +1,10 @@
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 
 	<groupId>com.github.funthomas424242</groupId>
 	<artifactId>files2gramps</artifactId>
-	<version>0.0.0</version>
+	<version>0.0.1</version>
 
 	<packaging>jar</packaging>
 
@@ -16,8 +17,8 @@
 		<url>https://github.com/FunThomas424242/files2gramps</url>
 		<connection>scm:git:https://github.com/FunThomas424242/files2gramps.git</connection>
 		<developerConnection>scm:git:https://github.com/FunThomas424242/files2gramps.git</developerConnection>
-	  <tag>HEAD</tag>
-  </scm>
+		<tag>HEAD</tag>
+	</scm>
 
 	<ciManagement>
 		<system>Travis</system>
@@ -149,6 +150,26 @@
 				</configuration>
 			</plugin>
 			<plugin>
+				<groupId>biz.aQute.bnd</groupId>
+				<artifactId>bnd-maven-plugin</artifactId>
+				<version>2.4.1</version>
+
+				<executions>
+					<execution>
+						<goals>
+							<goal>bnd-process</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-jar-plugin</artifactId>
+				<configuration>
+					<useDefaultManifestFile>true</useDefaultManifestFile>
+				</configuration>
+			</plugin>
+			<plugin>
 				<groupId>org.jacoco</groupId>
 				<artifactId>jacoco-maven-plugin</artifactId>
 				<executions>
@@ -178,6 +199,10 @@
 							<goal>single</goal>
 						</goals>
 						<configuration>
+							<archive>
+								<!-- because bnd plugin generated manifest -->
+								<manifestFile>target/classes/META-INF/MANIFEST.MF</manifestFile>
+							</archive>
 							<descriptorRefs>
 								<descriptorRef>jar-with-dependencies</descriptorRef>
 								<descriptorRef>src</descriptorRef>
