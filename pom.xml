@@ -199,6 +199,10 @@
 							<goal>single</goal>
 						</goals>
 						<configuration>
+							<archive>
+								<!-- because bnd plugin generated manifest -->
+								<manifestFile>target/classes/META-INF/MANIFEST.MF</manifestFile>
+							</archive>
 							<descriptorRefs>
 								<descriptorRef>jar-with-dependencies</descriptorRef>
 								<descriptorRef>src</descriptorRef>
