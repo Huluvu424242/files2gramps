@@ -3,7 +3,7 @@
 
     <groupId>com.github.funthomas424242</groupId>
     <artifactId>files2gramps</artifactId>
-    <version>0.0.2</version>
+    <version>0.0.3-SNAPSHOT</version>
 
     <packaging>jar</packaging>
 
@@ -16,7 +16,7 @@
         <url>https://github.com/FunThomas424242/files2gramps</url>
         <connection>scm:git:https://github.com/FunThomas424242/files2gramps.git</connection>
         <developerConnection>scm:git:https://github.com/FunThomas424242/files2gramps.git</developerConnection>
-        <tag>0.0.2-RELEASE</tag>
+        <tag>HEAD</tag>
     </scm>
 
     <ciManagement>
