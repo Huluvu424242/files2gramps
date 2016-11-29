@@ -1,252 +1,285 @@
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
-	<modelVersion>4.0.0</modelVersion>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
 
-	<groupId>com.github.funthomas424242</groupId>
-	<artifactId>files2gramps</artifactId>
-	<version>0.0.1</version>
+    <groupId>com.github.funthomas424242</groupId>
+    <artifactId>files2gramps</artifactId>
+    <version>0.0.2</version>
 
-	<packaging>jar</packaging>
-
-
-	<properties>
-
-	</properties>
-
-	<scm>
-		<url>https://github.com/FunThomas424242/files2gramps</url>
-		<connection>scm:git:https://github.com/FunThomas424242/files2gramps.git</connection>
-		<developerConnection>scm:git:https://github.com/FunThomas424242/files2gramps.git</developerConnection>
-		<tag>HEAD</tag>
-	</scm>
-
-	<ciManagement>
-		<system>Travis</system>
-		<url>https://travis-ci.org/FunThomas424242/files2gramps</url>
-	</ciManagement>
-
-	<issueManagement>
-		<system>Issue</system>
-		<url>https://github.com/FunThomas424242/files2gramps/issues</url>
-	</issueManagement>
-
-	<distributionManagement>
-		<snapshotRepository>
-			<id>bintray-funthomas424242-snapshots</id>
-			<name>oss-jfrog-artifactory-snapshots</name>
-			<url>https://oss.jfrog.org/artifactory/oss-snapshot-local</url>
-		</snapshotRepository>
-		<repository>
-			<id>bintray-funthomas424242-releases</id>
-			<name>oss-jfrog-artifactory-releases</name>
-			<url>https://oss.jfrog.org/artifactory/oss-release-local</url>
-		</repository>
-	</distributionManagement>
-
-	<dependencies>
-		<!-- https://mvnrepository.com/artifact/org.apache.commons/commons-compress -->
-		<dependency>
-			<groupId>org.apache.commons</groupId>
-			<artifactId>commons-compress</artifactId>
-		</dependency>
-		<!-- https://mvnrepository.com/artifact/net.sf.jmimemagic/jmimemagic -->
-		<dependency>
-			<groupId>net.sf.jmimemagic</groupId>
-			<artifactId>jmimemagic</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>org.slf4j</groupId>
-			<artifactId>slf4j-api</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>ch.qos.logback</groupId>
-			<artifactId>logback-classic</artifactId>
-		</dependency>
-		<!-- https://mvnrepository.com/artifact/ch.qos.logback/logback-core -->
-		<dependency>
-			<groupId>ch.qos.logback</groupId>
-			<artifactId>logback-core</artifactId>
-		</dependency>
-
-		<!-- https://mvnrepository.com/artifact/junit/junit -->
-		<dependency>
-			<groupId>junit</groupId>
-			<artifactId>junit</artifactId>
-			<scope>test</scope>
-		</dependency>
-		<!-- https://mvnrepository.com/artifact/org.apache.commons/commons-configuration2 -->
-		<dependency>
-			<groupId>org.apache.commons</groupId>
-			<artifactId>commons-configuration2</artifactId>
-			<scope>test</scope>
-		</dependency>
-		<!-- https://mvnrepository.com/artifact/commons-beanutils/commons-beanutils -->
-		<dependency>
-			<groupId>commons-beanutils</groupId>
-			<artifactId>commons-beanutils</artifactId>
-			<scope>test</scope>
-		</dependency>
-	</dependencies>
-
-	<dependencyManagement>
-		<dependencies>
-			<!-- https://mvnrepository.com/artifact/org.apache.commons/commons-compress -->
-			<dependency>
-				<groupId>org.apache.commons</groupId>
-				<artifactId>commons-compress</artifactId>
-				<version>1.12</version>
-			</dependency>
-			<!-- https://mvnrepository.com/artifact/net.sf.jmimemagic/jmimemagic -->
-			<dependency>
-				<groupId>net.sf.jmimemagic</groupId>
-				<artifactId>jmimemagic</artifactId>
-				<version>0.1.4</version>
-			</dependency>
-			<dependency>
-				<groupId>org.slf4j</groupId>
-				<artifactId>slf4j-api</artifactId>
-				<version>1.7.16</version>
-			</dependency>
-			<dependency>
-				<groupId>ch.qos.logback</groupId>
-				<artifactId>logback-classic</artifactId>
-				<version>1.1.7</version>
-			</dependency>
-			<!-- https://mvnrepository.com/artifact/ch.qos.logback/logback-core -->
-			<dependency>
-				<groupId>ch.qos.logback</groupId>
-				<artifactId>logback-core</artifactId>
-				<version>1.1.7</version>
-			</dependency>
-			<!-- https://mvnrepository.com/artifact/junit/junit -->
-			<dependency>
-				<groupId>junit</groupId>
-				<artifactId>junit</artifactId>
-				<version>4.12</version>
-			</dependency>
-			<!-- https://mvnrepository.com/artifact/org.apache.commons/commons-configuration2 -->
-			<dependency>
-				<groupId>org.apache.commons</groupId>
-				<artifactId>commons-configuration2</artifactId>
-				<version>2.0</version>
-			</dependency>
-			<!-- https://mvnrepository.com/artifact/commons-beanutils/commons-beanutils -->
-			<dependency>
-				<groupId>commons-beanutils</groupId>
-				<artifactId>commons-beanutils</artifactId>
-				<version>1.9.3</version>
-			</dependency>
-		</dependencies>
-	</dependencyManagement>
-
-	<build>
-		<plugins>
-			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-compiler-plugin</artifactId>
-				<configuration>
-					<source>1.8</source>
-					<target>1.8</target>
-				</configuration>
-			</plugin>
-			<plugin>
-				<groupId>biz.aQute.bnd</groupId>
-				<artifactId>bnd-maven-plugin</artifactId>
-				<version>2.4.1</version>
-
-				<executions>
-					<execution>
-						<goals>
-							<goal>bnd-process</goal>
-						</goals>
-					</execution>
-				</executions>
-			</plugin>
-			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-jar-plugin</artifactId>
-				<configuration>
-					<useDefaultManifestFile>true</useDefaultManifestFile>
-				</configuration>
-			</plugin>
-			<plugin>
-				<groupId>org.jacoco</groupId>
-				<artifactId>jacoco-maven-plugin</artifactId>
-				<executions>
-					<execution>
-						<goals>
-							<goal>prepare-agent</goal>
-						</goals>
-					</execution>
-					<execution>
-						<id>report</id>
-						<phase>test</phase>
-						<goals>
-							<goal>report</goal>
-						</goals>
-					</execution>
-				</executions>
-			</plugin>
-			<plugin>
-				<!-- NOTE: We don't need a groupId specification because the group is 
-					org.apache.maven.plugins ...which is assumed by default. -->
-				<artifactId>maven-assembly-plugin</artifactId>
-				<executions>
-					<execution>
-						<id>package-assemblies</id>
-						<phase>install</phase>
-						<goals>
-							<goal>single</goal>
-						</goals>
-						<configuration>
-							<archive>
-								<!-- because bnd plugin generated manifest -->
-								<manifestFile>target/classes/META-INF/MANIFEST.MF</manifestFile>
-							</archive>
-							<descriptorRefs>
-								<descriptorRef>jar-with-dependencies</descriptorRef>
-								<descriptorRef>src</descriptorRef>
-							</descriptorRefs>
-						</configuration>
-					</execution>
-				</executions>
-			</plugin>
-
-		</plugins>
-		<pluginManagement>
-			<plugins>
-				<plugin>
-					<groupId>org.apache.maven.plugins</groupId>
-					<artifactId>maven-compiler-plugin</artifactId>
-					<version>3.6.0</version>
-				</plugin>
-				<plugin>
-					<groupId>org.jacoco</groupId>
-					<artifactId>jacoco-maven-plugin</artifactId>
-					<version>0.7.7.201606060606</version>
-				</plugin>
-				<plugin>
-					<groupId>org.apache.maven.plugins</groupId>
-					<artifactId>maven-assembly-plugin</artifactId>
-					<version>3.0.0</version>
-				</plugin>
-			</plugins>
-		</pluginManagement>
-	</build>
-
-	<developers>
-		<developer>
-			<id>funthomas424242</id>
-			<name>Thomas Schubert</name>
-			<email>funthomas424242@googlemail.com</email>
-			<timezone>+1</timezone>
-			<organization>The world wide open source community</organization>
-			<roles>
-				<role>owner</role>
-				<role>developer</role>
-			</roles>
-		</developer>
-	</developers>
+    <packaging>jar</packaging>
 
 
+    <properties>
+
+    </properties>
+
+    <scm>
+        <url>https://github.com/FunThomas424242/files2gramps</url>
+        <connection>scm:git:https://github.com/FunThomas424242/files2gramps.git</connection>
+        <developerConnection>scm:git:https://github.com/FunThomas424242/files2gramps.git</developerConnection>
+        <tag>0.0.2-RELEASE</tag>
+    </scm>
+
+    <ciManagement>
+        <system>Travis</system>
+        <url>https://travis-ci.org/FunThomas424242/files2gramps</url>
+    </ciManagement>
+
+    <issueManagement>
+        <system>Issue</system>
+        <url>https://github.com/FunThomas424242/files2gramps/issues</url>
+    </issueManagement>
+
+    <distributionManagement>
+        <snapshotRepository>
+            <id>bintray-funthomas424242-snapshots</id>
+            <name>oss-jfrog-artifactory-snapshots</name>
+            <url>https://oss.jfrog.org/artifactory/oss-snapshot-local</url>
+        </snapshotRepository>
+        <repository>
+            <id>bintray-funthomas424242-releases</id>
+            <name>oss-jfrog-artifactory-releases</name>
+            <url>https://oss.jfrog.org/artifactory/oss-release-local</url>
+        </repository>
+    </distributionManagement>
+
+    <dependencies>
+        <!-- https://mvnrepository.com/artifact/org.apache.commons/commons-compress -->
+        <dependency>
+            <groupId>org.apache.commons</groupId>
+            <artifactId>commons-compress</artifactId>
+        </dependency>
+        <!-- https://mvnrepository.com/artifact/net.sf.jmimemagic/jmimemagic -->
+        <dependency>
+            <groupId>net.sf.jmimemagic</groupId>
+            <artifactId>jmimemagic</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.slf4j</groupId>
+            <artifactId>slf4j-api</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>ch.qos.logback</groupId>
+            <artifactId>logback-classic</artifactId>
+        </dependency>
+        <!-- https://mvnrepository.com/artifact/ch.qos.logback/logback-core -->
+        <dependency>
+            <groupId>ch.qos.logback</groupId>
+            <artifactId>logback-core</artifactId>
+        </dependency>
+
+        <!-- https://mvnrepository.com/artifact/junit/junit -->
+        <dependency>
+            <groupId>junit</groupId>
+            <artifactId>junit</artifactId>
+            <scope>test</scope>
+        </dependency>
+        <!-- https://mvnrepository.com/artifact/org.apache.commons/commons-configuration2 -->
+        <dependency>
+            <groupId>org.apache.commons</groupId>
+            <artifactId>commons-configuration2</artifactId>
+            <scope>test</scope>
+        </dependency>
+        <!-- https://mvnrepository.com/artifact/commons-beanutils/commons-beanutils -->
+        <dependency>
+            <groupId>commons-beanutils</groupId>
+            <artifactId>commons-beanutils</artifactId>
+            <scope>test</scope>
+        </dependency>
+    </dependencies>
+
+    <dependencyManagement>
+        <dependencies>
+            <!-- https://mvnrepository.com/artifact/org.apache.commons/commons-compress -->
+            <dependency>
+                <groupId>org.apache.commons</groupId>
+                <artifactId>commons-compress</artifactId>
+                <version>1.12</version>
+            </dependency>
+            <!-- https://mvnrepository.com/artifact/net.sf.jmimemagic/jmimemagic -->
+            <dependency>
+                <groupId>net.sf.jmimemagic</groupId>
+                <artifactId>jmimemagic</artifactId>
+                <version>0.1.4</version>
+            </dependency>
+            <dependency>
+                <groupId>org.slf4j</groupId>
+                <artifactId>slf4j-api</artifactId>
+                <version>1.7.16</version>
+            </dependency>
+            <dependency>
+                <groupId>ch.qos.logback</groupId>
+                <artifactId>logback-classic</artifactId>
+                <version>1.1.7</version>
+            </dependency>
+            <!-- https://mvnrepository.com/artifact/ch.qos.logback/logback-core -->
+            <dependency>
+                <groupId>ch.qos.logback</groupId>
+                <artifactId>logback-core</artifactId>
+                <version>1.1.7</version>
+            </dependency>
+            <!-- https://mvnrepository.com/artifact/junit/junit -->
+            <dependency>
+                <groupId>junit</groupId>
+                <artifactId>junit</artifactId>
+                <version>4.12</version>
+            </dependency>
+            <!-- https://mvnrepository.com/artifact/org.apache.commons/commons-configuration2 -->
+            <dependency>
+                <groupId>org.apache.commons</groupId>
+                <artifactId>commons-configuration2</artifactId>
+                <version>2.0</version>
+            </dependency>
+            <!-- https://mvnrepository.com/artifact/commons-beanutils/commons-beanutils -->
+            <dependency>
+                <groupId>commons-beanutils</groupId>
+                <artifactId>commons-beanutils</artifactId>
+                <version>1.9.3</version>
+            </dependency>
+        </dependencies>
+    </dependencyManagement>
+
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <configuration>
+                    <source>1.8</source>
+                    <target>1.8</target>
+                </configuration>
+            </plugin>
+            <plugin>
+                <groupId>biz.aQute.bnd</groupId>
+                <artifactId>bnd-maven-plugin</artifactId>
+                <version>2.4.1</version>
+
+                <executions>
+                    <execution>
+                        <goals>
+                            <goal>bnd-process</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-jar-plugin</artifactId>
+                <configuration>
+                    <useDefaultManifestFile>true</useDefaultManifestFile>
+                </configuration>
+            </plugin>
+            <plugin>
+                <groupId>org.jacoco</groupId>
+                <artifactId>jacoco-maven-plugin</artifactId>
+                <executions>
+                    <execution>
+                        <goals>
+                            <goal>prepare-agent</goal>
+                        </goals>
+                    </execution>
+                    <execution>
+                        <id>report</id>
+                        <phase>test</phase>
+                        <goals>
+                            <goal>report</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+            <plugin>
+                <!-- NOTE: We don't need a groupId specification because the group is
+                    org.apache.maven.plugins ...which is assumed by default. -->
+                <artifactId>maven-assembly-plugin</artifactId>
+                <executions>
+                    <execution>
+                        <id>package-assemblies</id>
+                        <phase>install</phase>
+                        <goals>
+                            <goal>single</goal>
+                        </goals>
+                        <configuration>
+                            <archive>
+                                <!-- because bnd plugin generated manifest -->
+                                <manifestFile>target/classes/META-INF/MANIFEST.MF</manifestFile>
+                            </archive>
+                            <descriptorRefs>
+                                <descriptorRef>jar-with-dependencies</descriptorRef>
+                                <descriptorRef>src</descriptorRef>
+                            </descriptorRefs>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-release-plugin</artifactId>
+                <configuration>
+                    <tagNameFormat>@{project.version}-RELEASE</tagNameFormat>
+                </configuration>
+            </plugin>
+        </plugins>
+        <pluginManagement>
+            <plugins>
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-compiler-plugin</artifactId>
+                    <version>3.6.0</version>
+                </plugin>
+                <plugin>
+                    <groupId>org.jacoco</groupId>
+                    <artifactId>jacoco-maven-plugin</artifactId>
+                    <version>0.7.7.201606060606</version>
+                </plugin>
+                <plugin>
+                    <groupId>biz.aQute.bnd</groupId>
+                    <artifactId>bnd-maven-plugin</artifactId>
+                    <version>2.4.1</version>
+                </plugin>
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-jar-plugin</artifactId>
+                    <version>2.4</version>
+                </plugin>
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-assembly-plugin</artifactId>
+                    <version>3.0.0</version>
+                </plugin>
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-release-plugin</artifactId>
+                    <version>2.5.3</version>
+                </plugin>
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-source-plugin</artifactId>
+                    <version>3.0.1</version>
+                </plugin>
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-javadoc-plugin</artifactId>
+                    <version>2.10.4</version>
+                </plugin>
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-deploy-plugin</artifactId>
+                    <version>2.8.2</version>
+                </plugin>
+            </plugins>
+        </pluginManagement>
+    </build>
+
+    <developers>
+        <developer>
+            <id>funthomas424242</id>
+            <name>Thomas Schubert</name>
+            <email>funthomas424242@googlemail.com</email>
+            <timezone>+1</timezone>
+            <organization>The world wide open source community</organization>
+            <roles>
+                <role>owner</role>
+                <role>developer</role>
+            </roles>
+        </developer>
+    </developers>
 </project>

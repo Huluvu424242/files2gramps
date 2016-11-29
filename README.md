@@ -42,3 +42,14 @@ See the following code snippet how to use.
     }
      
 ```
+# Developer info
+
+## Build a release
+(master will be only contains release versions)
+1. create feature branch to develop a feature
+9. at feature branch set the new snapshot version in pom.xml
+9. develop the feature
+9. check the CI phases for success
+9. mvn -B release:prepare
+9. mvn -B release:perform
+9. merge the release tag e.g. 0.0.9-RELEASE into master
