@@ -1,9 +1,9 @@
 # files2gramps
-Java lib for files to pack as a export into gramps database format.
+Java lib for files to pack as a export into []gramps database format](https://gramps-project.org/wiki/index.php?title=Gramps_XML).
 
 [![Build Status](https://travis-ci.org/FunThomas424242/files2gramps.svg?branch=master)](https://travis-ci.org/FunThomas424242/files2gramps)
 [![codecov](https://codecov.io/gh/FunThomas424242/files2gramps/branch/master/graph/badge.svg)](https://codecov.io/gh/FunThomas424242/files2gramps)
- [ ![Download](https://api.bintray.com/packages/funthomas424242/funthomas424242-maven-plugins/files2gramps/images/download.svg) ](https://bintray.com/funthomas424242/funthomas424242-maven-plugins/files2gramps/_latestVersion)
+[![Download](https://api.bintray.com/packages/funthomas424242/funthomas424242-libs/files2gramps/images/download.svg) ](https://bintray.com/funthomas424242/funthomas424242-libs/files2gramps/_latestVersion)
 
 
 # Usage
