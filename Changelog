@@ -1,3 +1,7 @@
+# 0.0.4-RELEASE
+
+* bnd Symbolic Names fixed for release build phases
+
 # 0.0.3-RELEASE
 
 * bundle delivery as p2-eclipse repository added
