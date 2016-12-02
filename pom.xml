@@ -42,7 +42,26 @@
         </repository>
     </distributionManagement>
 
+    <repositories>
+        <repository>
+            <snapshots>
+                <enabled>false</enabled>
+            </snapshots>
+            <id>bintray-enilink-maven</id>
+            <name>bintray</name>
+            <url>http://dl.bintray.com/enilink/maven</url>
+        </repository>
+    </repositories>
+
     <pluginRepositories>
+        <pluginRepository>
+            <snapshots>
+                <enabled>false</enabled>
+            </snapshots>
+            <id>bintray-enilink-maven</id>
+            <name>bintray-plugins</name>
+            <url>http://dl.bintray.com/enilink/maven</url>
+        </pluginRepository>
         <pluginRepository>
             <id>reficio</id>
             <url>http://repo.reficio.org/maven/</url>
@@ -271,7 +290,7 @@
                 <plugin>
                     <groupId>org.reficio</groupId>
                     <artifactId>p2-maven-plugin</artifactId>
-                    <version>1.2.0-SNAPSHOT</version>
+                    <version>1.2.1</version>
                 </plugin>
                 <plugin>
                     <groupId>org.apache.maven.plugins</groupId>
