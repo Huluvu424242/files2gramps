@@ -1,2 +1,5 @@
 -exportcontents: \
     com.github.funthomas424242.files2gramps
+Bundle-SymbolicName: com.github.funthomas424242.files2gramps
+Bundle-Name: files2gramps
+
