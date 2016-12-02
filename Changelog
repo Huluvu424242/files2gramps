@@ -1,3 +1,9 @@
+# 0.0.3-RELEASE
+
+* bundle delivery as p2-eclipse repository added
+* badged url to bintray package fixed
+* linkg to gramps project added
+
 # 0.0.2-RELEASE
 
 * new release build infos added

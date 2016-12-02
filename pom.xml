@@ -3,7 +3,7 @@
 
     <groupId>com.github.funthomas424242</groupId>
     <artifactId>files2gramps</artifactId>
-    <version>0.0.2</version>
+    <version>0.0.3</version>
 
     <packaging>jar</packaging>
 
@@ -16,7 +16,7 @@
         <url>https://github.com/FunThomas424242/files2gramps</url>
         <connection>scm:git:https://github.com/FunThomas424242/files2gramps.git</connection>
         <developerConnection>scm:git:https://github.com/FunThomas424242/files2gramps.git</developerConnection>
-        <tag>0.0.2-RELEASE</tag>
+        <tag>0.0.3-RELEASE</tag>
     </scm>
 
     <ciManagement>
@@ -41,6 +41,32 @@
             <url>https://oss.jfrog.org/artifactory/oss-release-local</url>
         </repository>
     </distributionManagement>
+
+    <repositories>
+        <repository>
+            <snapshots>
+                <enabled>false</enabled>
+            </snapshots>
+            <id>bintray-enilink-maven</id>
+            <name>bintray</name>
+            <url>http://dl.bintray.com/enilink/maven</url>
+        </repository>
+    </repositories>
+
+    <pluginRepositories>
+        <pluginRepository>
+            <snapshots>
+                <enabled>false</enabled>
+            </snapshots>
+            <id>bintray-enilink-maven</id>
+            <name>bintray-plugins</name>
+            <url>http://dl.bintray.com/enilink/maven</url>
+        </pluginRepository>
+        <pluginRepository>
+            <id>reficio</id>
+            <url>http://repo.reficio.org/maven/</url>
+        </pluginRepository>
+    </pluginRepositories>
 
     <dependencies>
         <!-- https://mvnrepository.com/artifact/org.apache.commons/commons-compress -->
@@ -149,10 +175,26 @@
                 </configuration>
             </plugin>
             <plugin>
+                <groupId>org.jacoco</groupId>
+                <artifactId>jacoco-maven-plugin</artifactId>
+                <executions>
+                    <execution>
+                        <goals>
+                            <goal>prepare-agent</goal>
+                        </goals>
+                    </execution>
+                    <execution>
+                        <id>report</id>
+                        <phase>test</phase>
+                        <goals>
+                            <goal>report</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+            <plugin>
                 <groupId>biz.aQute.bnd</groupId>
                 <artifactId>bnd-maven-plugin</artifactId>
-                <version>2.4.1</version>
-
                 <executions>
                     <execution>
                         <goals>
@@ -169,20 +211,22 @@
                 </configuration>
             </plugin>
             <plugin>
-                <groupId>org.jacoco</groupId>
-                <artifactId>jacoco-maven-plugin</artifactId>
+                <groupId>org.reficio</groupId>
+                <artifactId>p2-maven-plugin</artifactId>
                 <executions>
                     <execution>
+                        <id>generate-p2-site</id>
+                        <phase>package</phase>
                         <goals>
-                            <goal>prepare-agent</goal>
+                            <goal>site</goal>
                         </goals>
-                    </execution>
-                    <execution>
-                        <id>report</id>
-                        <phase>test</phase>
-                        <goals>
-                            <goal>report</goal>
-                        </goals>
+                        <configuration>
+                            <artifacts>
+                                <!-- specify your depencies here -->
+                                <!-- groupId:artifactId:version -->
+                                <artifact><id>com.github.funthomas424242:files2gramps:${project.version}</id></artifact>
+                            </artifacts>
+                        </configuration>
                     </execution>
                 </executions>
             </plugin>
@@ -206,6 +250,9 @@
                                 <descriptorRef>jar-with-dependencies</descriptorRef>
                                 <descriptorRef>src</descriptorRef>
                             </descriptorRefs>
+                            <descriptors>
+                                <descriptor>src/assembly/p2.xml</descriptor>
+                            </descriptors>
                         </configuration>
                     </execution>
                 </executions>
@@ -239,6 +286,11 @@
                     <groupId>org.apache.maven.plugins</groupId>
                     <artifactId>maven-jar-plugin</artifactId>
                     <version>2.4</version>
+                </plugin>
+                <plugin>
+                    <groupId>org.reficio</groupId>
+                    <artifactId>p2-maven-plugin</artifactId>
+                    <version>1.2.1</version>
                 </plugin>
                 <plugin>
                     <groupId>org.apache.maven.plugins</groupId>
