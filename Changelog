@@ -1,3 +1,7 @@
+# 0.0.5-RELEASE
+
+* auto publishing to bintray added
+
 # 0.0.4-RELEASE
 
 * bnd Symbolic Names fixed for release build phases
