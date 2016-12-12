@@ -15,31 +15,30 @@ You need:
  * the media folder as File
  
 Then you can make a instance of GrampsExporter and call the createExportfile() method.
-See the following code snippet how to use.
+See the following code snippet how to use in a xtend project [ahnen.dsl](https://github.com/FunThomas424242/ahnen.dsl).
 
 ```
    
-    @Test
-    public void createValidTargetArchivefile_WithValidMediaFolder()
-        throws FileNotFoundException, IOException, MagicParseException,
-        MagicMatchNotFoundException, MagicException, CompressorException {
-  
-    // prepare 
-    final String targetArchivFileName = "target/test/created"
-            + System.currentTimeMillis() + "/new";
-    final String tmpFolderPrefix = "tmpFolderBeispiel2";
-    
-    final GrampsExporter exporter = new GrampsExporter(tmpFolderPrefix,
-            grampsDatabasFile, new File(targetArchivFileName), mediaFolder);
-    // execution
-    final File exportFile = exporter.createExportfile();
-    
-    // asserts
-    assertTrue("Archiv wurde nicht angelegt", exportFile.exists());
-    final FileHelper fileHelper = new FileHelper(exportFile);
-    assertTrue("Not a valid gramps archive",
-            fileHelper.isValidGPKGArchive());
-    }
+class AhnenGenerator extends AbstractGenerator {
+
+	override void doGenerate(Resource resource, IFileSystemAccess2 fsa, IGeneratorContext context) {
+		for (buch : resource.allContents.toIterable.filter(Familienbuch)) {
+		    // generate gramps database
+			fsa.generateFile(Helper.getGrampsDBFileName(buch),DataXMLGenerator.createGrampsDBContent(buch));
+			var URI grampsDbfileURI=fsa.getURI(Helper.getGrampsDBFileName(buch));
+			var File grampsDbfileFile = Helper.convertURI2File(buch,grampsDbfileURI);
+			var File mediaFolderFile = Helper.getMediaFolderFile(buch,fsa);
+			mediaFolderFile.mkdirs();
+			var File grampsArchiveFileTmp = Files.createTempFile("gramps",null).toFile();
+		    Helper.createTarGZ(grampsArchiveFileTmp, grampsDbfileFile ,mediaFolderFile);
+		    var FileInputStream fIn = new FileInputStream(grampsArchiveFileTmp);
+		    fsa.generateFile(Helper.getGrampsArchiveFileName(buch),fIn);
+		    // generate docbook project
+			fsa.generateFile(Helper.getPOMFileName(buch), POMGenerator.createPOMContent(buch))
+			fsa.generateFile(Helper.getDbkFileName(buch, "book.dbk"), BookGenerator.createBookContent(fsa, buch))
+		}
+	}
+}
      
 ```
 # Developer info

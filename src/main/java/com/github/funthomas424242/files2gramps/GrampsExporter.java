@@ -29,7 +29,7 @@ public class GrampsExporter {
     protected File mediaFolder;
 
     public GrampsExporter(final String tmpFolderPrefix, final File grampsFile,
-            final File targetArchive, final File mediaFolder)
+                          final File targetArchive, final File mediaFolder)
             throws IOException {
 
         if (tmpFolderPrefix == null || tmpFolderPrefix.length() < 1
@@ -43,7 +43,7 @@ public class GrampsExporter {
     }
 
     public GrampsExporter(final String tmpFolderPrefix, final File grampsFile,
-            final File targetArchive) throws IOException {
+                          final File targetArchive) throws IOException {
         this(tmpFolderPrefix, grampsFile, targetArchive, null);
     }
 
@@ -53,7 +53,7 @@ public class GrampsExporter {
 
     /**
      * Creates a archive file without content.
-     * 
+     *
      * @throws IOException
      * @throws FileNotFoundException
      */
@@ -111,12 +111,15 @@ public class GrampsExporter {
         if (mediaFolder == null) {
             return;
         }
+        final File mediaParentFile = mediaFolder.getParentFile();
+        final String mediaFolderEntryPrefix = mediaFolder.getCanonicalPath().substring
+                (mediaParentFile.getCanonicalPath().length() + 1, mediaFolder.getCanonicalPath().length());
         final FileHelper fileHelper = new FileHelper(mediaFolder);
 
         for (File file : fileHelper.getRecursiveFilelistOfFolder()) {
             logger
-                .debug("Add to archive media file: " + file.getAbsolutePath());
-            final String entryName = file.getCanonicalPath().substring(
+                    .debug("Add to archive media file: " + file.getAbsolutePath());
+            final String entryName = mediaFolderEntryPrefix+"/"+file.getCanonicalPath().substring(
                     mediaFolder.getCanonicalPath().length() + 1,
                     file.getCanonicalPath().length());
             logger.debug("as tar entry with name: " + entryName);
