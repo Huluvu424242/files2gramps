@@ -1,3 +1,4 @@
+[![Stories in Ready](https://badge.waffle.io/FunThomas424242/files2gramps.png?label=ready&title=Ready)](https://waffle.io/FunThomas424242/files2gramps)
 # files2gramps
 Java lib for files to pack as a export into [gramps database format](https://gramps-project.org/wiki/index.php?title=Gramps_XML).
 
